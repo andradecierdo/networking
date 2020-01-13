@@ -1,0 +1,47 @@
+version: '3'
+
+services:
+
+### PHP-FPM ##############################################
+    php-fpm:
+      # after creating a tag and push the docker image to the hub, 
+      # you can use the image: rather than using build: to run the image from the docker hub
+
+      build:
+        context: ./php
+        args:
+         - PHP_VERSION=${PHP_VERSION}
+      volumes:
+        - ./php/php${PHP_VERSION}:/usr/local/etc/php/php.ini
+        - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
+      expose:
+        - ${NGINX_PHP_UPSTREAM_PORT}
+
+### NGINX Server #########################################
+    nginx:
+      image: nginx:latest
+      volumes:
+        - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
+        - ${NGINX_HOST_LOG_PATH}:/var/log/nginx
+        - ${NGINX_SITES_PATH}:/etc/nginx/conf.d
+      ports:
+        - "${NGINX_HOST_HTTP_PORT}:80"
+        - "${NGINX_HOST_HTTPS_PORT}:443"
+      links:
+        - php-fpm
+  
+### MySQL ################################################
+    mysql:
+      image: mysql/mysql-server:${MYSQL_VERSION}
+      environment:
+        - MYSQL_DATABASE=${MYSQL_DATABASE}
+        - MYSQL_USER=${MYSQL_USER}
+        - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+        - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+        - TZ=nz
+      volumes:
+        # we can also do this one if we have a repository for the database data
+        #- ${DATA_PATH_HOST}/mysql:/var/lib/mysql
+        - ${MYSQL_ENTRYPOINT_INITDB}:/docker-entrypoint-initdb.d
+      ports:
+        - "${MYSQL_PORT}:3306"
