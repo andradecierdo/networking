@@ -22,13 +22,13 @@ class Page extends Component {
     super(props)
 
     this.validator = new ReeValidate({
-      email: 'required|email',
+      username: 'required|min:6|max:20',
       password: 'required|min:6'
     })
 
     this.state = {
       credentials: {
-        email: '',
+        username: '',
         password: '',
       },
       errors: this.validator.errors
@@ -92,9 +92,9 @@ class Page extends Component {
       return <Redirect to="/" />
     }
     const {credentials, errors} = this.state
-    const {email, password} = credentials;
+    const {username, password} = credentials;
     const props = {
-      email,
+      username,
       password,
       errors,
       handleChange: this.handleChange,

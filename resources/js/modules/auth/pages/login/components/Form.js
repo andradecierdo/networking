@@ -1,33 +1,32 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Link } from 'react-router-dom'
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
 const displayName = 'LoginForm'
 const propTypes = {
-  email: PropTypes.string,
+  username: PropTypes.string,
   password: PropTypes.string,
   errors: PropTypes.object.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
 }
 
-const LoginForm = ({ email, password, errors, handleChange, handleSubmit }) => (
+const LoginForm = ({ username, password, errors, handleChange, handleSubmit }) => (
   <Form className="form" role="form" onSubmit={handleSubmit} noValidate>
     <h2 className="card-title text-center">SnowballEffect</h2>
     <Form.Group>
       <Form.Control
         type="text"
-        className={`form-control-lg ${errors.has('email') && 'is-invalid'}`}
-        name="email"
-        id="email"
-        placeholder="Email address"
-        value={email || ''}
+        className={`form-control-lg ${errors.has('username') && 'is-invalid'}`}
+        name="username"
+        id="username"
+        placeholder="Username"
+        value={username || ''}
         onChange={e => handleChange(e.target.name, e.target.value)}
         required
         autoFocus/>
-      {errors.has('email') && <div className="invalid-feedback">{errors.first('email')}</div>}
+      {errors.has('username') && <div className="invalid-feedback">{errors.first('username')}</div>}
     </Form.Group>
     <Form.Group>
       <Form.Control

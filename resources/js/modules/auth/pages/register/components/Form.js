@@ -9,6 +9,10 @@ const displayName = 'RegistrationForm'
 const propTypes = {
   firstName: PropTypes.string.isRequired,
   lastName: PropTypes.string.isRequired,
+  middleName: PropTypes.string.isRequired,
+  address: PropTypes.string.isRequired,
+  phoneNumber: PropTypes.string.isRequired,
+  username: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
   password: PropTypes.string.isRequired,
   passwordConfirmation: PropTypes.string.isRequired,
@@ -17,10 +21,36 @@ const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
 }
 
-const RegistrationForm = ({firstName, lastName, email, password, passwordConfirmation, errors, handleChange, handleSubmit }) => {
+const RegistrationForm = ({
+  firstName,
+  lastName,
+  middleName,
+  address,
+  phoneNumber,
+  username,
+  email,
+  password,
+  passwordConfirmation,
+  errors,
+  handleChange,
+  handleSubmit
+}) => {
   return (
     <Form role="form" onSubmit={handleSubmit} noValidate>
       <h2 className="card-title text-center">Registration Form</h2>
+      <Form.Group>
+        <Form.Control
+          type="text"
+          className={`form-control form-control-lg ${errors.has('username') && 'is-invalid'}`}
+          name="username"
+          id="username"
+          placeholder="Username"
+          value={username || ''}
+          onChange={e => handleChange(e.target.name, e.target.value)}
+          required
+          autoFocus/>
+        {errors.has('username') && <div className="invalid-feedback">{errors.first('username')}</div>}
+      </Form.Group>
       <Form.Group>
         <Form.Control
           type="text"
@@ -49,6 +79,45 @@ const RegistrationForm = ({firstName, lastName, email, password, passwordConfirm
       </Form.Group>
       <Form.Group>
         <Form.Control
+          type="text"
+          className={`form-control form-control-lg ${errors.has('middleName') && 'is-invalid'}`}
+          name="middleName"
+          id="middleName"
+          placeholder="Middle Name"
+          value={middleName || ''}
+          onChange={e => handleChange(e.target.name, e.target.value)}
+          required
+          autoFocus/>
+        {errors.has('middleName') && <div className="invalid-feedback">{errors.first('middleName')}</div>}
+      </Form.Group>
+      <Form.Group>
+        <Form.Control
+          type="text"
+          className={`form-control form-control-lg ${errors.has('address') && 'is-invalid'}`}
+          name="address"
+          id="address"
+          placeholder="Address"
+          value={address || ''}
+          onChange={e => handleChange(e.target.name, e.target.value)}
+          required
+          autoFocus/>
+        {errors.has('address') && <div className="invalid-feedback">{errors.first('address')}</div>}
+      </Form.Group>
+      <Form.Group>
+        <Form.Control
+          type="text"
+          className={`form-control form-control-lg ${errors.has('phoneNumber') && 'is-invalid'}`}
+          name="phoneNumber"
+          id="phoneNumber"
+          placeholder="Phone Number"
+          value={phoneNumber || ''}
+          onChange={e => handleChange(e.target.name, e.target.value)}
+          required
+          autoFocus/>
+        {errors.has('phoneNumber') && <div className="invalid-feedback">{errors.first('phoneNumber')}</div>}
+      </Form.Group>
+      <Form.Group>
+        <Form.Control
           type="email"
           className={`form-control form-control-lg ${errors.has('email') && 'is-invalid'}`}
           name="email"
@@ -56,7 +125,6 @@ const RegistrationForm = ({firstName, lastName, email, password, passwordConfirm
           placeholder="Email address"
           value={email || ''}
           onChange={e => handleChange(e.target.name, e.target.value)}
-          required
           autoFocus/>
         {errors.has('email') && <div className="invalid-feedback">{errors.first('email')}</div>}
       </Form.Group>

@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import _ from 'lodash'
-import { Redirect } from 'react-router-dom'
 import { register } from '../../service'
 import ReeValidate from 'ree-validate'
 
@@ -21,17 +20,25 @@ class Page extends Component {
     super(props)
     
     this.validator = new ReeValidate({
-      firstName: 'required|min:6',
-      lastName: 'required|min:6',
-      email: 'required|email',
+      firstName: 'required|max:30',
+      lastName: 'required|max:20',
+      middleName: 'required|max:20',
+      address: 'required',
+      phoneNumber: 'required',
+      username: 'required|max:20|min:6',
+      email: 'email',
       password: 'required|min:6',
       passwordConfirmation: 'required|min:6'
     })
-    
+
     this.state = {
       credentials: {
         firstName: '',
         lastName: '',
+        middleName: '',
+        address: '',
+        phoneNumber: '',
+        username: '',
         email: '',
         password: '',
         passwordConfirmation: '',
@@ -42,12 +49,6 @@ class Page extends Component {
     
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
-  }
-  
-  componentDidMount() {
-    if (this.props.isAuthenticated) {
-      return <Redirect to="/" />
-    }
   }
 
   handleChange(name, value) {
@@ -85,7 +86,7 @@ class Page extends Component {
   submit(credentials) {
     this.props.dispatch(register(credentials))
         .then(() => {
-          this.props.history.push('/login');
+          this.props.history.push('/');
         })
       .catch(({ error, statusCode }) => {
         const { errors } = this.validator
@@ -99,14 +100,15 @@ class Page extends Component {
         this.setState({ errors })
       })
   }
-  
+
   render() {
-    if (this.props.isAuthenticated) {
-      return <Redirect to="/"/>
-    }
     const {
       firstName,
       lastName,
+      middleName,
+      address,
+      phoneNumber,
+      username,
       email,
       password,
       passwordConfirmation
@@ -114,6 +116,10 @@ class Page extends Component {
     const props = {
       firstName,
       lastName,
+      middleName,
+      address,
+      phoneNumber,
+      username,
       email,
       password,
       passwordConfirmation,
@@ -121,7 +127,6 @@ class Page extends Component {
       handleChange: this.handleChange,
       handleSubmit: this.handleSubmit,
     }
-    
     return (
       <div className="container py-5">
         <Row>

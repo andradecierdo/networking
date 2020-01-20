@@ -1,5 +1,5 @@
-const APP_TITLE = 'SBE React-Laravel Application';
-const APP_URL_PREFIX = '/app';
+const APP_TITLE = 'Networking Site';
+const APP_URL_PREFIX = '/';
 
 export {
   APP_TITLE,

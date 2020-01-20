@@ -24,7 +24,7 @@ class LoginRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'required|email|exists:users,email',
+            'username' => 'required|exists:users,username',
             'password' => 'required|min:6'
         ];
     }
@@ -37,7 +37,7 @@ class LoginRequest extends FormRequest
     public function messages()
     {
         return [
-            'email.exists' => 'Invalid credentials.',
+            'username.exists' => 'Invalid credentials.',
         ];
     }
 }

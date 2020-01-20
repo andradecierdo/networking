@@ -5,14 +5,9 @@ import routes from './routes'
 import PrivateRoute from './Private'
 import PublicRoute from './Public'
 import Layout from '../layout'
-import { createBrowserHistory } from "history";
-
-const history = createBrowserHistory();
-
-import {APP_URL_PREFIX} from '../values/index'
 
 const Routes = () => (
-  <Router history={history} basename={APP_URL_PREFIX}>
+  <Router>
     <Layout>
       <Switch>
         {routes.map((route, i) => {

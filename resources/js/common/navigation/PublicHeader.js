@@ -15,7 +15,6 @@ const PublicHeader = () => (
       </Nav>
       <Nav>
         <NavLink exact to="/login" className="nav-link">Login</NavLink>
-        <NavLink exact to="/register" className="nav-link">Register</NavLink>
       </Nav>
     </Navbar.Collapse>
   </React.Fragment>

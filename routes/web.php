@@ -12,13 +12,9 @@
 */
 
 Route::get('/', function () {
-    return view('index');
-});
-
-Route::get('/app', function () {
     return view('react.index');
 });
 
-Route::get('/app/{any}', function () {
+Route::get('/{any}', function () {
     return view('react.index');
 })->where('any', '.*');

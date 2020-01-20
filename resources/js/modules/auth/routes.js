@@ -12,6 +12,8 @@ export default [
   },
   {
     path: '/register',
+    auth: true,
+    strict: true,
     exact: true,
     component: Loadable({
       loader: () => import('./pages/register/index'),

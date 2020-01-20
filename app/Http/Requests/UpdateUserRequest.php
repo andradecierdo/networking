@@ -26,15 +26,21 @@ class UpdateUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'first_name' => 'required|min:3',
-            'last_name' => 'required|min:3',
-            'email' => [
+            'first_name' => 'required|max:30',
+            'last_name' => 'required|max:20',
+            'middle_name' => 'required|max:20',
+            'address' => 'required',
+            'phone_number' => 'required|max:20',
+            'username' => [
                 'required',
-                'email',
-                Rule::unique('users')->ignore(Auth::user()->id)
+                'min:6',
+                'max:20',
+                Rule::unique('users')->ignore(Auth::user()->id),
             ],
-            'phone' => 'nullable|min:8|numeric',
-            'about' => 'nullable|min:10|max:1024'
+            'email' => [
+                'email',
+                Rule::unique('users')->ignore(Auth::user()->id),
+            ],
         ];
     }
 }

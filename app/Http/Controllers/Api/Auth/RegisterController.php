@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Auth;
 use App\Http\Controllers\Controller;
 use App\Repositories\User\UserRepositoryInterface;
 use App\Http\Requests\UserRequest;
+use Illuminate\Support\Facades\Auth;
 
 class RegisterController extends Controller
 {
@@ -26,6 +27,8 @@ class RegisterController extends Controller
     {
         $userData = $request->validated();
         $userData['password'] = bcrypt($userData['password']);
+        $userData['parent_id'] = Auth::user()->id;
+
         $user = $this->userRepository->create($userData);
 
         return response()->json($user, 200);

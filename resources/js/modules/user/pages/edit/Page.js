@@ -17,10 +17,13 @@ class Page extends Component {
     super(props)
     
     this.validator = new ReeValidate({
-      'firstName': 'required|min:6',
-      'lastName': 'required|min:6',
-      'email': 'required|email',
-      'phone': 'min:8|numeric',
+      'firstName': 'required|max:30',
+      'lastName': 'required|max:20',
+      'middleName': 'required|max:20',
+      'username': 'required|min:6',
+      'address': 'required',
+      'email': 'email',
+      'phoneNumber': 'required|min:8|numeric',
     })
     
     const user = this.props.user.toJson()
@@ -94,9 +97,11 @@ class Page extends Component {
         <h1>Profile</h1>
         <section className="row">
           <div className="col-12 col-md-9 col-sm-12">
-            <Form {...this.state}
-                  onChange={this.handleChange}
-                  onSubmit={this.handleSubmit}/>
+            <Form
+              {...this.state}
+              onChange={this.handleChange}
+              onSubmit={this.handleSubmit}
+            />
           </div>
         </section>
       </main>

@@ -6,7 +6,6 @@ import ExperienceRow from './components/ExperienceRow'
 import ExperienceModal from '../modal'
 import Pagination from './components/Pagination'
 import { Link } from 'react-router-dom'
-import {history} from "../../../../store/config";
 
 import { experienceListRequest, experienceRemoveRequest } from '../../service'
 
@@ -79,7 +78,6 @@ class Page extends Component {
       )
     })
   }
-  //     <main className="col-sm-12 ml-sm-auto col-md-10 pt-3" role="main">
   render() {
     const {showModal, currentExperience} = this.state;
     return (
