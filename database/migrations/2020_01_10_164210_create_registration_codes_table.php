@@ -19,6 +19,7 @@ class CreateRegistrationCodesTable extends Migration
             $table->string('passcode')->unique();
             $table->string('security_code')->unique();
             $table->enum('status', ['active', 'inactive']);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

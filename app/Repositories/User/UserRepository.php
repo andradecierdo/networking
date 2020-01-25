@@ -25,4 +25,19 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         $this->model = $model;
         return $this;
     }
+
+    public function loadAllByParent(int $parentId, $limit = 20)
+    {
+        return $this->model
+            ->parentId($parentId)
+            ->latest()
+            ->paginate($limit);
+    }
+
+    public function loadAll($limit = 10)
+    {
+        return $this->model
+            ->latest()
+            ->paginate($limit);
+    }
 }

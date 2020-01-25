@@ -1,6 +1,6 @@
 version: "3.7"
 services:
-  #Laravel Service
+  #Laravel Services
   app:
     container_name: laravel-react-app
     restart: always
@@ -23,7 +23,7 @@ services:
     networks:
       - laravel_react_network
 
-  #DB Service
+  #DB Services
   database:
     image: mariadb:latest
     container_name: laravel-react-database
@@ -43,7 +43,7 @@ services:
     networks:
       - laravel_react_network
 
-  #Nginx Service
+  #Nginx Services
   server:
     image: nginx:alpine
     container_name: laravel-react-server

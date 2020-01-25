@@ -56,13 +56,15 @@
     "react-document-title": "^2.0.3",
     "react-dom": "^16.8.6",
     "react-draft-wysiwyg": "^1.13.2",
+    "react-infinite-scroller": "^1.2.4",
     "react-loadable": "^5.5.0",
     "react-redux": "^7.1.0",
     "react-router-dom": "^5.0.1",
     "reactstrap": "^8.0.0",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
-    "ree-validate": "^3.0.2"
+    "ree-validate": "^3.0.2",
+    "yarn": "^1.21.1"
   },
   "browserslist": [
     ">0.2%",

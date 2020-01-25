@@ -20,6 +20,8 @@ class Page extends Component {
     super(props)
     
     this.validator = new ReeValidate({
+      passcode: 'required',
+      securityCode: 'required',
       firstName: 'required|max:30',
       lastName: 'required|max:20',
       middleName: 'required|max:20',
@@ -33,6 +35,8 @@ class Page extends Component {
 
     this.state = {
       credentials: {
+        passcode: '',
+        securityCode: '',
         firstName: '',
         lastName: '',
         middleName: '',
@@ -103,6 +107,8 @@ class Page extends Component {
 
   render() {
     const {
+      passcode,
+      securityCode,
       firstName,
       lastName,
       middleName,
@@ -114,6 +120,8 @@ class Page extends Component {
       passwordConfirmation
     } = this.state.credentials
     const props = {
+      passcode,
+      securityCode,
       firstName,
       lastName,
       middleName,

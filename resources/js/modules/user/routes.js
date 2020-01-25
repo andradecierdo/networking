@@ -12,4 +12,14 @@ export default [
       loading: LoadingComponent,
     }),
   },
+  {
+    path: '/dashboard',
+    exact: true,
+    auth: true,
+    strict: true,
+    component: Loadable({
+      loader: () => import('./pages/dashboard/index'),
+      loading: LoadingComponent,
+    }),
+  },
 ]

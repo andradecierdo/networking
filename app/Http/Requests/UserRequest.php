@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
+use App\Models\RegistrationCode;
 
 class UserRequest extends FormRequest
 {
@@ -15,7 +16,7 @@ class UserRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return Auth::check();
     }
 
     /**
@@ -26,8 +27,8 @@ class UserRequest extends FormRequest
     public function rules()
     {
         return [
-//            'passcode' => 'required',
-//            'security_code' => 'required',
+            'passcode' => 'required',
+            'security_code' => 'required',
             'first_name' => 'required|max:30',
             'last_name' => 'required|max:20',
             'middle_name' => 'required|max:20',
@@ -39,6 +40,25 @@ class UserRequest extends FormRequest
             'password_confirmation' => 'required|min:6',
             'parent_id' => 'nullable|exists:users',
         ];
+    }
+
+    public function withValidator($validator)
+    {
+        $passcode = $this->get('passcode');
+        $securityCode = $this->get('security_code');
+
+        $isValid = RegistrationCode::query()
+            ->wherePasscode($passcode)
+            ->whereSecurityCode($securityCode)
+            ->whereNull('user_id')
+            ->exists();
+
+        $validator->after(function ($validator) use ($isValid) {
+            if (!$isValid) {
+                $validator->errors()->add('passcode', 'Invalid passcode!');
+                $validator->errors()->add('security_code', 'Invalid security_code!');
+            }
+        });
     }
 
     /**

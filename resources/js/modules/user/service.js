@@ -18,3 +18,27 @@ export function userUpdateRequest(params) {
     })
   )
 }
+
+export function fetchAllChildren({page, limit}) {
+  return () => (
+    new Promise((resolve, reject) => {
+      Http.get('/users', {
+        params: {page, limit},
+      })
+        .then(result => resolve(Transformer.fetch(result.data)))
+        .catch(error => reject(error))
+    })
+  );
+}
+
+
+//TODO temp
+export function fetchCodes() {
+  return () => (
+    new Promise((resolve, reject) => {
+      Http.get('/admin/registration-codes/generate')
+        .then(result => resolve(Transformer.fetch(result.data)))
+        .catch(error => reject(error))
+    })
+  );
+}

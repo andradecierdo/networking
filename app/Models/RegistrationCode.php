@@ -10,6 +10,8 @@ class RegistrationCode extends Model
     use SoftDeletes;
 
     protected $fillable = [
+        'user_id',
+        'status',
         'passcode',
         'security_code',
     ];

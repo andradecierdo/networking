@@ -7,6 +7,8 @@ import Button from 'react-bootstrap/Button';
 const displayName = 'RegistrationForm'
 
 const propTypes = {
+  passcode: PropTypes.string.isRequired,
+  securityCode: PropTypes.string.isRequired,
   firstName: PropTypes.string.isRequired,
   lastName: PropTypes.string.isRequired,
   middleName: PropTypes.string.isRequired,
@@ -22,6 +24,8 @@ const propTypes = {
 }
 
 const RegistrationForm = ({
+  passcode,
+  securityCode,
   firstName,
   lastName,
   middleName,
@@ -38,6 +42,32 @@ const RegistrationForm = ({
   return (
     <Form role="form" onSubmit={handleSubmit} noValidate>
       <h2 className="card-title text-center">Registration Form</h2>
+      <Form.Group>
+        <Form.Control
+          type="text"
+          className={`form-control form-control-lg ${errors.has('passcode') && 'is-invalid'}`}
+          name="passcode"
+          id="passcode"
+          placeholder="Passcode"
+          value={passcode || ''}
+          onChange={e => handleChange(e.target.name, e.target.value)}
+          required
+          autoFocus/>
+        {errors.has('passcode') && <div className="invalid-feedback">{errors.first('passcode')}</div>}
+      </Form.Group>
+      <Form.Group>
+        <Form.Control
+          type="text"
+          className={`form-control form-control-lg ${errors.has('securityCode') && 'is-invalid'}`}
+          name="securityCode"
+          id="securityCode"
+          placeholder="Security Code"
+          value={securityCode || ''}
+          onChange={e => handleChange(e.target.name, e.target.value)}
+          required
+          autoFocus/>
+        {errors.has('securityCode') && <div className="invalid-feedback">{errors.first('securityCode')}</div>}
+      </Form.Group>
       <Form.Group>
         <Form.Control
           type="text"

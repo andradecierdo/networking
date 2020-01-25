@@ -21,5 +21,8 @@ Route::prefix('users')->group(base_path('routes/api/users.php'));
 Route::prefix('experiences')->group(base_path('routes/api/experiences.php'));
 // register transactions routes
 Route::prefix('transactions')->group(base_path('routes/api/transactions.php'));
+
+//Admin routes
 // register registration codes routes
-Route::prefix('registration-codes')->group(base_path('routes/api/registration-codes.php'));
+Route::prefix('admin/registration-codes')->group(base_path('routes/api/admin/registration-codes.php'));
+Route::prefix('admin/transactions')->group(base_path('routes/api/admin/transactions.php'));

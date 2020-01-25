@@ -8,6 +8,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Builder;
 
 class User extends Authenticatable
 {
@@ -88,4 +89,17 @@ class User extends Authenticatable
     {
         return $this->where('username', $username)->first();
     }
+
+    /**
+     * Load only users related with the parent_id
+     *
+     * @param Builder $query
+     * @param int $parentId
+     * @return Builder
+     */
+    public function scopeParentId(Builder $query, int $parentId): Builder
+    {
+        return $query->where('parent_id', $parentId);
+    }
+
 }
