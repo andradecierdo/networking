@@ -102,4 +102,9 @@ class User extends Authenticatable
         return $query->where('parent_id', $parentId);
     }
 
+    public function scopeIsAdmin(Builder $query): Builder
+    {
+        return $query->where('is_admin', 1);
+    }
+
 }

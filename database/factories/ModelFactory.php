@@ -30,7 +30,7 @@ $factory->define(App\Models\Experience::class, function (Faker\Generator $faker)
 
     return [
         'position' => $faker->jobTitle,
-        'company' => $faker->company,
+        'transactions' => $faker->company,
         'address' => $faker->address,
         'description' => $faker->sentence(15),
         'start_date' => \Carbon\Carbon::now()->addYear(-2),

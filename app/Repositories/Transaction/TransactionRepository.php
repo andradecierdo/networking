@@ -33,7 +33,7 @@ class TransactionRepository extends BaseRepository implements TransactionReposit
         return $this->model
             ->with('user')
             ->latest()
-//            ->mine($userId) //TODO create scope
+            ->mine($userId)
             ->paginate($limit);
     }
 
@@ -49,5 +49,12 @@ class TransactionRepository extends BaseRepository implements TransactionReposit
             ->whereUserId($userId)
             ->whereId($id)
             ->firstOrfail();
+    }
+
+    public function findByIdWithUser(int $id)
+    {
+        return $this->model
+            ->with(['user', 'approver'])
+            ->findOrFail($id);
     }
 }

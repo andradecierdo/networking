@@ -24,7 +24,7 @@ class TransactionController extends Controller
 
     public function index(Request $request)
     {
-
+        return $this->transactionRepository->loadAll();
     }
 
     public function store()
@@ -35,5 +35,10 @@ class TransactionController extends Controller
     public function delete()
     {
 
+    }
+
+    public function show($id)
+    {
+        return $this->transactionRepository->findByIdWithUser($id);
     }
 }

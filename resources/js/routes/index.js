@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Switch } from 'react-router-dom'
 import routes from './routes'
 import PrivateRoute from './Private'
 import PublicRoute from './Public'
+import AdminRoute from './Admin'
 import Layout from '../layout'
 
 const Routes = () => (
@@ -11,8 +12,13 @@ const Routes = () => (
     <Layout>
       <Switch>
         {routes.map((route, i) => {
+          console.log('route', route);
           if (route.auth) {
-            return <PrivateRoute key={i} {...route} />
+            if (route.admin) {
+              return <AdminRoute key={i} {...route} />
+            } else {
+              return <PrivateRoute key={i} {...route} />
+            }
           }
           return <PublicRoute key={i} {...route} />
         })}

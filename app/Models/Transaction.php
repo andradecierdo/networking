@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -26,5 +27,18 @@ class Transaction extends Model
     public function approver()
     {
         return $this->belongsTo(User::class, 'approved_by', 'id');
+    }
+
+    /**
+     * Load only transactions related with the user id
+     *
+     * @param Builder $query
+     * @param int $userId
+     *
+     * @return Builder
+     */
+    public function scopeMine(Builder $query, int $userId): Builder
+    {
+        return $query->where('user_id', $userId);
     }
 }

@@ -26,3 +26,5 @@ Route::prefix('transactions')->group(base_path('routes/api/transactions.php'));
 // register registration codes routes
 Route::prefix('admin/registration-codes')->group(base_path('routes/api/admin/registration-codes.php'));
 Route::prefix('admin/transactions')->group(base_path('routes/api/admin/transactions.php'));
+Route::prefix('admin/users')->group(base_path('routes/api/admin/users.php'));
+Route::prefix('admin/auth')->group(base_path('routes/api/admin/auth.php'));

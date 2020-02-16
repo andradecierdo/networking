@@ -1,4 +1,5 @@
 import Model from '../../utils/Model'
+import moment from 'moment'
 
 class User extends Model {
   constructor(props) {
@@ -17,6 +18,8 @@ class User extends Model {
     this.address = props.address || ''
     this.phoneNumber = props.phoneNumber || ''
     this.email = props.email || ''
+    this.createdAt = props.createdAt ? moment(props.createdAt) : null
+    this.updatedAt = props.updatedAt ? moment(props.updatedAt) : null
   }
 }
 
