@@ -18,8 +18,14 @@ class User extends Model {
     this.address = props.address || ''
     this.phoneNumber = props.phoneNumber || ''
     this.email = props.email || ''
+    this.status = props.status || ''
+    this.isAdmin = props.isAdmin || false
+    this.balance = props.balance || 0
+    this.rebate = props.rebate || 0
     this.createdAt = props.createdAt ? moment(props.createdAt) : null
     this.updatedAt = props.updatedAt ? moment(props.updatedAt) : null
+    // User relationship model
+    this.parent = props.parent ? new User(props.parent) : null
   }
 }
 

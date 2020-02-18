@@ -30,7 +30,7 @@ class RegistrationCodeController extends Controller
 
     public function index(Request $request)
     {
-        return $this->registrationCodeRepository->loadAll();
+        return $this->registrationCodeRepository->loadAllWithUser();
     }
 
     public function store(Request $request)
@@ -41,9 +41,11 @@ class RegistrationCodeController extends Controller
         return response()->json($regCode, 201);
     }
 
-    public function delete()
+    public function delete($id)
     {
+        $this->registrationCodeRepository->deleteById($id);
 
+        return response(['success' => true], 200);
     }
 
     public function generateCode()

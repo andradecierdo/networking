@@ -32,9 +32,17 @@ class TransactionController extends Controller
 
     }
 
-    public function delete()
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function delete($id)
     {
+        $this->transactionRepository->deleteById($id);
 
+        return response(['success' => true], 200);
     }
 
     public function show($id)

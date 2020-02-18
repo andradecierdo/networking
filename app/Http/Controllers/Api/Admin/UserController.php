@@ -35,7 +35,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $user = Auth::user();
-        return $this->userRepository->loadAllByParent($user->id);
+        return $this->userRepository->loadAllByParentWithParent($user->id, 5);
     }
 
 
@@ -46,5 +46,23 @@ class UserController extends Controller
             ->update($request->validated());
 
         return response()->json($user, 201);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function delete($id)
+    {
+        $this->userRepository->deleteById($id);
+
+        return response(['success' => true], 200);
+    }
+
+    public function show($id)
+    {
+        return $this->userRepository->findByIdWithParent($id);
     }
 }

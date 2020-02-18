@@ -40,4 +40,21 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
             ->latest()
             ->paginate($limit);
     }
+
+    public function loadAllByParentWithParent(int $parentId, $limit = 20)
+    {
+        return $this->model
+            ->parentId($parentId)
+            ->with('parent')
+            ->latest()
+            ->paginate($limit);
+    }
+
+    public function findByIdWithParent(int $id)
+    {
+        return $this->model
+            ->with('parent')
+            ->whereId($id)
+            ->firstOrfail();
+    }
 }

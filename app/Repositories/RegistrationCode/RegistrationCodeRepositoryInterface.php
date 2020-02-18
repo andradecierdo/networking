@@ -10,5 +10,7 @@ interface RegistrationCodeRepositoryInterface
 
     public function findByCodes(string $passcode, string $securityCode);
 
+    public function loadAllWithUser();
+
     public function loadAll();
 }

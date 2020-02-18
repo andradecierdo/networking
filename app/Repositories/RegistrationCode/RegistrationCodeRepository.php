@@ -34,9 +34,17 @@ class RegistrationCodeRepository extends BaseRepository implements RegistrationC
             ->first();
     }
 
-    public function loadAll($limit = 20)
+    public function loadAll($limit = 5)
     {
         return $this->model
+            ->latest()
+            ->paginate($limit);
+    }
+
+    public function loadAllWithUser($limit = 5)
+    {
+        return $this->model
+            ->with('user')
             ->latest()
             ->paginate($limit);
     }

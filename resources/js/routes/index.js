@@ -7,12 +7,13 @@ import PublicRoute from './Public'
 import AdminRoute from './Admin'
 import Layout from '../layout'
 
+//TODO reimplement to have same implementation with CM. check downloaded assets folder
 const Routes = () => (
   <Router>
     <Layout>
       <Switch>
         {routes.map((route, i) => {
-          console.log('route', route);
+          // console.log('route', route);
           if (route.auth) {
             if (route.admin) {
               return <AdminRoute key={i} {...route} />

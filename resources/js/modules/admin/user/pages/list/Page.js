@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import * as PropTypes from 'prop-types'
-import { fetchTransactions } from '../../service'
+import { fetchUsers } from '../../service'
 import Table from './components/table';
-import TransactionModal from '../detail/Modal';
+import UserModal from '../detail/Modal';
 import _ from 'lodash'
 
-import Transaction from '../../../../../modules/transaction/Transaction';
+import User from '../../../../../modules/user/User';
 
 class Page extends Component {
   static propTypes = {
@@ -21,40 +21,38 @@ class Page extends Component {
       orderBy: 'ins_time',
       query: '',
       page: 1,
-      openTransactionModal: false,
-      transactionId: null,
-      transactions: {},
+      openUserModal: false,
+      userId: null,
+      users: {},
     };
 
     this.handleChangePage = this.handleChangePage.bind(this);
     this.handleRequestSort = this.handleRequestSort.bind(this);
     this.handleChangeText = this.handleChangeText.bind(this);
-    this.handleViewTransaction = this.handleViewTransaction.bind(this);
-    this.handleCloseTransactionModal = this.handleCloseTransactionModal.bind(this);
-    this.handleFetchTransactions = this.handleFetchTransactions.bind(this);
+    this.handleViewUser = this.handleViewUser.bind(this);
+    this.handleCloseUserModal = this.handleCloseUserModal.bind(this);
+    this.handleFetchUsers = this.handleFetchUsers.bind(this);
     this.handleDeleteSuccess = this.handleDeleteSuccess.bind(this);
   }
 
   componentDidMount() {
     window.scrollTo(0, 0);
-    this.handleFetchTransactions();
+    this.handleFetchUsers();
   }
 
-  componentDidUpdate() {}
-
   handleDeleteSuccess = () => {
-    const {transactions, page} = this.state;
-    if (transactions.data.length === 1 && page > 1) {
+    const {users, page} = this.state;
+    if (users.data.length === 1 && page > 1) {
       this.setState({
         ...this.state,
         page: page - 1,
-      }, () => this.handleFetchTransactions());
+      }, () => this.handleFetchUsers());
     } else {
-      this.handleFetchTransactions();
+      this.handleFetchUsers();
     }
   }
 
-  handleFetchTransactions = (params) => {
+  handleFetchUsers = (params) => {
     let queryParams = _.clone(params);
     const {order, orderBy, query, page} = this.state;
     if (_.isEmpty(params)) {
@@ -65,10 +63,10 @@ class Page extends Component {
         page,
       }
     }
-    this.props.dispatch(fetchTransactions(queryParams)).then(data => {
-      data.data = data.data.map((transaction) => new Transaction(transaction));
+    this.props.dispatch(fetchUsers(queryParams)).then(data => {
+      data.data = data.data.map((user) => new User(user));
       this.setState({
-        transactions: {
+        users: {
           ...data,
         }
       });
@@ -84,7 +82,7 @@ class Page extends Component {
     }
 
     this.setState({ order, orderBy }, () => {
-      this.handleFetchTransactions();
+      this.handleFetchUsers();
     });
   };
 
@@ -95,7 +93,7 @@ class Page extends Component {
       orderBy: 'ins_time',
       query: event.target.value,
     }, () => {
-      this.handleFetchTransactions();
+      this.handleFetchUsers();
     });
   };
 
@@ -103,49 +101,49 @@ class Page extends Component {
     this.setState({
       ...this.state,
       page: page + 1,
-    }, () => this.handleFetchTransactions());
+    }, () => this.handleFetchUsers());
   }
 
-  handleViewTransaction = (id = null) => {
+  handleViewUser = (id = null) => {
     this.setState({
-      openTransactionModal: true,
-      transactionId: id,
+      openUserModal: true,
+      userId: id,
     });
   };
 
-  handleCloseTransactionModal = () => {
+  handleCloseUserModal = () => {
     this.setState({
-      openTransactionModal: false,
+      openUserModal: false,
     });
   };
 
   render() {
     const props = this.props;
     const state = this.state;
-    const {openTransactionModal, transactionId, transactions} = state;
+    const {openUserModal, userId, users} = state;
 
-    if (_.isEmpty(transactions)) {
+    if (_.isEmpty(users)) {
       return <div/>;
     }
 
     return (
       <React.Fragment>
         <Table
-          list={transactions}
+          list={users}
           handleChangeText={this.handleChangeText}
           handleChangePage={this.handleChangePage}
           handleRequestSort={this.handleRequestSort}
-          onViewTransaction={this.handleViewTransaction}
+          onViewUser={this.handleViewUser}
           {...state}
           {...props}
         />
-          {openTransactionModal && !_.isNil(transactionId) &&
-            <TransactionModal
+          {openUserModal && !_.isNil(userId) &&
+            <UserModal
               {...props}
-              id={transactionId}
+              id={userId}
               onDeleteSuccess={this.handleDeleteSuccess}
-              onClose={this.handleCloseTransactionModal}
-              open={openTransactionModal}
+              onClose={this.handleCloseUserModal}
+              open={openUserModal}
             />
           }
       </React.Fragment>

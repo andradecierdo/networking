@@ -13,26 +13,26 @@ export default [
       loading: LoadingComponent,
     }),
   },
-  {
-    path: '/admin/transactions/create',
-    admin: true,
-    auth: true,
-    exact: true,
-    forAdmin: true,
-    component: Loadable({
-      loader: () => import('./pages/register'),
-      loading: LoadingComponent,
-    }),
-  },
-  {
-    path: '/admin/transactions/:id',
-    admin: true,
-    auth: true,
-    exact: true,
-    forAdmin: true,
-    component: Loadable({
-      loader: () => import('./pages/register'),
-      loading: LoadingComponent,
-    }),
-  }
+  // {
+  //   path: '/admin/transactions/create',
+  //   admin: true,
+  //   auth: true,
+  //   exact: true,
+  //   forAdmin: true,
+  //   component: Loadable({
+  //     loader: () => import('./pages/register'),
+  //     loading: LoadingComponent,
+  //   }),
+  // },
+  // {
+  //   path: '/admin/transactions/:id',
+  //   admin: true,
+  //   auth: true,
+  //   exact: true,
+  //   forAdmin: true,
+  //   component: Loadable({
+  //     loader: () => import('./pages/register'),
+  //     loading: LoadingComponent,
+  //   }),
+  // }
 ];

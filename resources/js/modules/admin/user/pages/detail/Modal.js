@@ -15,12 +15,12 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 
-import Transaction from '../../../../../modules/transaction/Transaction';
+import User from '../../../../../modules/user/User';
 import DeleteDialog from '../../../components/dialog/Delete';
 
 import {
-  fetchTransactionDetail,
-  deleteTransaction,
+  fetchUserDetail,
+  deleteUser,
 } from '../../service';
 
 class CompanyModal extends Component {
@@ -42,7 +42,7 @@ class CompanyModal extends Component {
       id: this.props.id,
       open: false,
       openDialog: false,
-      transaction: {},
+      user: {},
     };
 
     this.handleAcceptDialog = this.handleAcceptDialog.bind(this);
@@ -54,22 +54,14 @@ class CompanyModal extends Component {
   }
 
   componentDidMount() {
-    this.handleFetchTransactionDetail();
+    this.handleFetchUserDetail();
   }
-
-  componentDidUpdate() {
-    // const { company } = this.props;
-    // if (company.loaded && company.deleted) {
-    //   this.setState({ openDialog: false });
-    //   this.props.onClose();
-    // }
-  }
-
-  handleFetchTransactionDetail = () => {
-    this.props.dispatch(fetchTransactionDetail(this.state.id)).then(data => {
+  
+  handleFetchUserDetail = () => {
+    this.props.dispatch(fetchUserDetail(this.state.id)).then(data => {
        this.setState({
-         transaction: {
-           ...(new Transaction(data)),
+         user: {
+           ...(new User(data)),
            loaded: true,
          }
        })
@@ -84,9 +76,8 @@ class CompanyModal extends Component {
     this.setState({ openDialog: false });
   };
 
-  //TODO reimplement closing of modal. Check component didUpdate
   handleAcceptDialog = () => {
-    this.props.dispatch(deleteTransaction(this.state.id)).then(() => {
+    this.props.dispatch(deleteUser(this.state.id)).then(() => {
       this.props.onClose();
       this.props.onDeleteSuccess()
       this.setState({openDialog: false});
@@ -98,7 +89,7 @@ class CompanyModal extends Component {
   };
 
   handleEdit = () => {
-    this.props.history.push(`/admin/transactions/${this.state.id}`);
+    this.props.history.push(`/admin/users/${this.state.id}`);
   };
 
   handleDelete = () => {
@@ -107,8 +98,8 @@ class CompanyModal extends Component {
 
   render() {
     const { classes, onClose, open } = this.props;
-    const { message, openDialog, transaction } = this.state;
-    if (transaction.loaded) {
+    const { message, openDialog, user } = this.state;
+    if (user.loaded) {
       return (
         <div>
           <Modal
@@ -128,42 +119,50 @@ class CompanyModal extends Component {
                 style={{ padding: '20px' }}
                 variant="h5"
                 id="modal-title">
-                Transaction Detail
+                User Detail
               </Typography>
               <br/>
               <Table>
                 <TableBody>
                   <TableRow>
-                    <TableCell className={classes.labelCell}>Account Name</TableCell>
-                    <TableCell>{`${transaction.user.firstName} ${transaction.user.lastName} `}</TableCell>
+                    <TableCell className={classes.labelCell}>Username</TableCell>
+                    <TableCell>{user.username}</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell className={classes.labelCell}>User Contact No.</TableCell>
-                    <TableCell>{transaction.user.phoneNumber}</TableCell>
+                    <TableCell className={classes.labelCell}>First Name</TableCell>
+                    <TableCell>{user.firstName}</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell className={classes.labelCell}>Amount</TableCell>
-                    <TableCell>{transaction.amount}</TableCell>
+                    <TableCell className={classes.labelCell}>Last Name</TableCell>
+                    <TableCell>{user.lastName}</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell className={classes.labelCell}>Transcation No.</TableCell>
-                    <TableCell>{transaction.transactionNumber}</TableCell>
+                    <TableCell className={classes.labelCell}>Phone Number</TableCell>
+                    <TableCell>{user.phoneNumber}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className={classes.labelCell}>Email</TableCell>
+                    <TableCell>{user.email}</TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell className={classes.labelCell}>Status</TableCell>
-                    <TableCell>{transaction.status}</TableCell>
+                    <TableCell>{user.status}</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell className={classes.labelCell}>Type</TableCell>
-                    <TableCell>{transaction.type}</TableCell>
+                    <TableCell className={classes.labelCell}>Balance</TableCell>
+                    <TableCell>{user.balance}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className={classes.labelCell}>Rebate</TableCell>
+                    <TableCell>{user.rebate}</TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell className={classes.labelCell}>Date Created</TableCell>
-                    <TableCell>{transaction.createdAt.format('MMMM, DD YYYY')}</TableCell>
+                    <TableCell>{user.createdAt.format('MMMM, DD YYYY')}</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell className={classes.labelCell}>Approved By</TableCell>
-                    <TableCell>{`${transaction.approver.firstName} ${transaction.approver.lastName} `}</TableCell>
+                    <TableCell className={classes.labelCell}>Upline</TableCell>
+                    <TableCell>{`${user.parent.firstName} ${user.parent.lastName} `}</TableCell>
                   </TableRow>
                 </TableBody>
               </Table>

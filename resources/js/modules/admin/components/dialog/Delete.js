@@ -77,14 +77,14 @@ class ConfirmationDialog extends React.PureComponent {
             onClick={this.handleCancel}
             color="default"
             variant="outlined">
-            いいえ
+            Cancel
           </Button>
           <Button
             onClick={this.handleAccept}
             color="primary"
             variant="outlined"
             autoFocus>
-            はい
+            Delete
           </Button>
         </DialogActions>
       </Dialog>

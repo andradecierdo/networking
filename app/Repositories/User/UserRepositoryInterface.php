@@ -10,7 +10,11 @@ interface UserRepositoryInterface
 
     public function loadAll();
 
+    public function loadAllByParentWithParent(int $parentId);
+
     public function loadAllByParent(int $parentId);
 
     public function findById(int $id);
+
+    public function findByIdWithParent(int $id);
 }

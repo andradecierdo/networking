@@ -3,12 +3,12 @@ import Http from '../../../utils/Http'
 import Transformer from '../../../utils/Transformer'
 import {processError} from "../../../common/error"
 
-export function fetchTransactions(params = null) {
+export function fetchUsers(params = null) {
   let queryParams = params ? `?${QueryString.stringify(params)}` : '';
 
-  return () => (
+  return dispatch => (
     new Promise((resolve, reject) => {
-      Http.get(`/admin/transactions${queryParams}`)
+      Http.get(`/admin/users${queryParams}`)
         .then((res) => {
           const data = Transformer.fetch(res.data);
           return resolve(data);
@@ -20,10 +20,10 @@ export function fetchTransactions(params = null) {
   )
 }
 
-export function fetchTransactionDetail(id) {
+export function fetchUserDetail(id) {
   return () => (
     new Promise((resolve, reject) => {
-      return Http.get(`/admin/transactions/${id}`)
+      return Http.get(`/admin/users/${id}`)
         .then(res => {
           const data = Transformer.fetch(res.data);
           return resolve(data);
@@ -35,10 +35,10 @@ export function fetchTransactionDetail(id) {
   )
 }
 
-export function deleteTransaction(id) {
+export function deleteUser(id) {
   return () => (
     new Promise((resolve, reject) => {
-      return Http.delete(`/admin/transactions/${id}`)
+      return Http.delete(`/admin/users/${id}`)
         .then(res => {
           return resolve(res);
         })
@@ -49,10 +49,10 @@ export function deleteTransaction(id) {
   )
 }
 
-export function addTransaction(data) {
-  return dispatch => (
+export function addUser(data) {
+  return () => (
     new Promise((resolve, reject) => {
-      Http.post(`/admin/transactions`, data)
+      Http.post(`/admin/users`, data)
         .then((res) => {
           const data = Transformer.fetch(res.data);
           return resolve(data);
@@ -64,10 +64,10 @@ export function addTransaction(data) {
   );
 }
 
-export function editTransaction(data, id) {
-  return dispatch => (
+export function editUser(data, id) {
+  return () => (
     new Promise((resolve, reject) => {
-      Http.put(`/admin/transactions/${id}`, data)
+      Http.put(`/admin/users/${id}`, data)
         .then(() => {
           return resolve(data);
         })

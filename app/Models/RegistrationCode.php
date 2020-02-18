@@ -15,4 +15,9 @@ class RegistrationCode extends Model
         'passcode',
         'security_code',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

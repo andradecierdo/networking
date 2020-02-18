@@ -72,7 +72,6 @@ class Sidebar extends Component {
 
   render() {
     const {classes, handleDrawerClose, open, user} = this.props;
-    console.log('side bar', user);
     const isAdmin = user.id === 1;
 
     return <div className={classes.root}>
