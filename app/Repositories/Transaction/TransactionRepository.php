@@ -57,4 +57,10 @@ class TransactionRepository extends BaseRepository implements TransactionReposit
             ->with(['user', 'approver'])
             ->findOrFail($id);
     }
+
+    public function updateStatus(string $status)
+    {
+         $this->model->update(['status', $status]);
+         return $this->model;
+    }
 }

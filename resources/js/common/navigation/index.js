@@ -11,7 +11,7 @@ class Navigation extends Component {
   static propTypes = {
     isAuthenticated: PropTypes.bool.isRequired,
     user: PropTypes.object.isRequired,
-    // history: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
   }
   

@@ -6,7 +6,7 @@ import {processError} from "../../../common/error"
 export function fetchUsers(params = null) {
   let queryParams = params ? `?${QueryString.stringify(params)}` : '';
 
-  return dispatch => (
+  return () => (
     new Promise((resolve, reject) => {
       Http.get(`/admin/users${queryParams}`)
         .then((res) => {
@@ -52,7 +52,7 @@ export function deleteUser(id) {
 export function addUser(data) {
   return () => (
     new Promise((resolve, reject) => {
-      Http.post(`/admin/users`, data)
+      Http.post(`/admin/users`, Transformer.send(data))
         .then((res) => {
           const data = Transformer.fetch(res.data);
           return resolve(data);
@@ -67,7 +67,7 @@ export function addUser(data) {
 export function editUser(data, id) {
   return () => (
     new Promise((resolve, reject) => {
-      Http.put(`/admin/users/${id}`, data)
+      Http.put(`/admin/users/${id}`, Transformer.send(data))
         .then(() => {
           return resolve(data);
         })

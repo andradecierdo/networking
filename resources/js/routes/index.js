@@ -1,31 +1,36 @@
 import React from 'react'
-import { BrowserRouter as Router, Switch } from 'react-router-dom'
+import { Router, Switch } from 'react-router-dom'
+import createBrowserHistory from 'history/createBrowserHistory'
+import _ from 'lodash'
 
 import routes from './routes'
 import PrivateRoute from './Private'
 import PublicRoute from './Public'
-import AdminRoute from './Admin'
-import Layout from '../layout'
 
-//TODO reimplement to have same implementation with CM. check downloaded assets folder
+import Layout from '../layout'
+import AdminRoute from './Admin'
+
+const history = createBrowserHistory()
+
 const Routes = () => (
-  <Router>
-    <Layout>
-      <Switch>
-        {routes.map((route, i) => {
-          // console.log('route', route);
-          if (route.auth) {
-            if (route.admin) {
-              return <AdminRoute key={i} {...route} />
-            } else {
-              return <PrivateRoute key={i} {...route} />
-            }
-          }
-          return <PublicRoute key={i} {...route} />
-        })}
-      </Switch>
-    </Layout>
+  <Router history={history}>
+    <Switch>
+      {routes.map((route, i) => {
+        if (route.admin && route.auth) {
+          const forAdminRoute = _.isNil(route.forAdmin) ? false : route.forAdmin;
+          return <AdminRoute
+            key={i}
+            layout={Layout}
+            forAdmin={forAdminRoute}
+            {...route}/>
+        }
+        if (!route.admin && route.auth) {
+          return <PrivateRoute key={i} layout={Layout} {...route} />
+        }
+        return <PublicRoute key={i} layout={Layout} {...route} />
+      })}
+    </Switch>
   </Router>
-)
+);
 
 export default Routes

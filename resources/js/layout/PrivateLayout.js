@@ -24,21 +24,14 @@ class PrivateLayout extends Component {
   }
 
   render() {
-    const { children, location } = this.props;
-    const currentPathArray = location.pathname.split('/');
-    const editor = (
-      currentPathArray[1] === 'movie' &&
-      currentPathArray[2] === 'editor');
-    const narrationEditor = (
-      currentPathArray[1] === 'movie' &&
-      currentPathArray[2] === 'narration');
+    const { children } = this.props;
 
-    return <div id="body" className={(editor || narrationEditor) ? 'body__editor' : ''}>
-      <Navigation/>
+    return <div id="body">
+      <Navigation {...this.props}/>
       <main>
         {children}
       </main>
-      {!editor && !narrationEditor && <Footer/>}
+      <Footer/>
     </div>
   }
 }

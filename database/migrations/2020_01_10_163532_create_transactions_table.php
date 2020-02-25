@@ -19,8 +19,8 @@ class CreateTransactionsTable extends Migration
             $table->string('transaction_number')->unique();
             $table->enum('type', ['rebate', 'encash']);
             $table->double('amount');
-            $table->enum('status', ['active', 'inactive']);
-            $table->unsignedInteger('approved_by');
+            $table->enum('status', ['active', 'inactive', 'pending', 'approved']);
+            $table->unsignedInteger('approved_by')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

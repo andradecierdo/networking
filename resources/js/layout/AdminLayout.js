@@ -7,7 +7,7 @@ import Header from '../modules/admin/components/common/Header'
 import Footer from '../modules/admin/components/common/Footer'
 import { withStyles } from '@material-ui/core'
 import Sidebar from '../modules/admin/components/common/Sidebar'
-// import '../../sass/admin.scss'
+import '../../sass/admin.scss'
 // import { logoutUser } from '../utils/Logout';
 import {logout} from '../modules/auth/service'
 

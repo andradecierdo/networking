@@ -18,7 +18,7 @@ function PublicLayout(props) {
   }
 
   return <div id="body">
-    <Navigation/>
+    <Navigation {...props}/>
     <main>
       {children}
     </main>

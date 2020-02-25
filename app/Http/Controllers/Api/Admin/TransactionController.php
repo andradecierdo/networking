@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Repositories\Transaction\TransactionRepositoryInterface;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TransactionController extends Controller
 {
@@ -48,5 +49,13 @@ class TransactionController extends Controller
     public function show($id)
     {
         return $this->transactionRepository->findByIdWithUser($id);
+    }
+
+    public function updateStatus($id, $status)
+    {
+        $user = Auth::user();
+        return $this->transactionRepository
+            ->findByIdAndUser($user->id, $id)
+            ->updateStatus($status);
     }
 }

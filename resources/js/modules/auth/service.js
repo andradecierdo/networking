@@ -63,7 +63,7 @@ export function login(credentials) {
 }
 
 export function register(credentials) {
-  return dispatch => (
+  return () => (
     new Promise((resolve, reject) => {
       Http.post('auth/register', Transformer.send(credentials))
         .then(res => {

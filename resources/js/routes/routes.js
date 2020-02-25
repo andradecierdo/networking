@@ -2,6 +2,7 @@ import homeRoutes from "../modules/home/routes"
 import authRoutes from "../modules/auth/routes"
 import userRoutes from "../modules/user/routes"
 import experienceRoutes from "../modules/experience/routes"
+import transactionRoutes from "../modules/transaction/routes"
 import adminLoginRoutes from "../modules/admin/login/routes"
 import adminDashboardRoutes from "../modules/admin/dashboard/routes"
 import adminTransactionRoutes from "../modules/admin/transactions/routes"
@@ -13,6 +14,7 @@ export default [
   ...authRoutes,
   ...userRoutes,
   ...experienceRoutes,
+  ...transactionRoutes,
   ...adminLoginRoutes,
   ...adminDashboardRoutes,
   ...adminTransactionRoutes,
