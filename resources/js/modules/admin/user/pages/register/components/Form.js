@@ -172,21 +172,42 @@ class Form extends Component {
   }
 
   render() {
-    const {classes, theme, errors} = this.props;
+    const {value} = this.state;
+    const {
+      classes,
+      theme,
+      errors,
+      dispatch,
+      history,
+      password,
+      passwordConfirmation,
+      mode,
+      passcode,
+      securityCode,
+      firstName,
+      lastName,
+      middleName,
+      balance,
+      rebate,
+      address,
+      phoneNumber,
+      username,
+      email,
+      handleSubmit,
+    } = this.props;
     const props = {
-      dispatch: this.props.dispatch,
-      history: this.props.history,
-      email: this.props.email,
-      password: this.props.password,
-      passwordConfirmation: this.props.passwordConfirmation,
-      errors: errors,
+      dispatch,
+      history,
+      email,
+      password,
+      passwordConfirmation,
+      errors,
     };
-    const mode = this.props.mode;
     return (
       <div className={classes.root}>
         <AppBar position="static" color="default">
           <Tabs
-            value={this.state.value}
+            value={value}
             onChange={this.handleChangeTab}
             indicatorColor="primary"
             textColor="primary"
@@ -197,7 +218,7 @@ class Form extends Component {
         </AppBar>
         <SwipeableViews
           axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-          index={this.state.value}
+          index={value}
           onChangeIndex={this.handleChangeIndex}>
           <TabContainer dir={theme.direction}>
             <form
@@ -205,7 +226,7 @@ class Form extends Component {
               noValidate
               autoComplete="off"
               role="form"
-              onSubmit={this.props.handleSubmit}
+              onSubmit={handleSubmit}
             >
               <Divider/>
               {mode === 'create' &&
@@ -213,47 +234,85 @@ class Form extends Component {
                 <InputWrapper
                   name="passcode"
                   type="text"
-                  errors={this.props.errors}
-                  value={this.props.passcode}
+                  errors={errors}
+                  value={passcode}
                   onChange={this.handleChange}
                   label="Passcode" focus={true}
                 />
                 <InputWrapper
                   name="securityCode"
                   type="text"
-                  errors={this.props.errors}
-                  value={this.props.securityCode}
+                  errors={errors}
+                  value={securityCode}
                   onChange={this.handleChange}
                   label="Security Code"
                 />
               </React.Fragment>
               }
-              <InputWrapper name="username" type="text" errors={this.props.errors}
-                            value={this.props.username}
-                            onChange={this.handleChange}
-                            label="Username"/>
-              <InputWrapper name="address" type="text" errors={this.props.errors}
-                            value={this.props.address}
-                            onChange={this.handleChange}
-                            label="Address"/>
-              <InputWrapper name="phoneNumber" type="text" errors={this.props.errors}
-                            value={this.props.phoneNumber}
-                            onChange={this.handleChange}
-                            label="Phone Number"/>
-              <Divider/>
-              <InputWrapper name="lastName" type="text" errors={this.props.errors}
-                            value={this.props.lastName}
-                            onChange={this.handleChange}
-                            label="Last Name"/>
-              <InputWrapper name="firstName" type="text" errors={this.props.errors}
-                            value={this.props.firstName}
-                            onChange={this.handleChange}
-                            label="First Name"
+              <InputWrapper
+                name="username"
+                type="text"
+                errors={errors}
+                value={username}
+                onChange={this.handleChange}
+                label="Username"
               />
-              <InputWrapper name="middleName" type="text" errors={this.props.errors}
-                            value={this.props.middleName}
-                            onChange={this.handleChange}
-                            label="Middle Name"
+              <Divider/>
+              <InputWrapper
+                name="lastName"
+                type="text"
+                errors={errors}
+                value={lastName}
+                onChange={this.handleChange}
+                label="Last Name"
+              />
+              <InputWrapper
+                name="firstName"
+                type="text"
+                errors={errors}
+                value={firstName}
+                onChange={this.handleChange}
+                label="First Name"
+              />
+              <InputWrapper
+                name="middleName"
+                type="text"
+                errors={errors}
+                value={middleName}
+                onChange={this.handleChange}
+                label="Middle Name"
+              />
+              <InputWrapper
+                name="balance"
+                type="number"
+                errors={errors}
+                value={balance}
+                onChange={this.handleChange}
+                label="Balance"
+              />
+              <InputWrapper
+                name="rebate"
+                type="number"
+                errors={errors}
+                value={rebate}
+                onChange={this.handleChange}
+                label="Rebate"
+              />
+              <InputWrapper
+                name="address"
+                type="text"
+                errors={errors}
+                value={address}
+                onChange={this.handleChange}
+                label="Address"
+              />
+              <InputWrapper
+                name="phoneNumber"
+                type="text"
+                errors={errors}
+                value={phoneNumber}
+                onChange={this.handleChange}
+                label="Phone Number"
               />
               <EmailAddField
                 mode={mode}

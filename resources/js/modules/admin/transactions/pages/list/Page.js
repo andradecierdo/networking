@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import * as PropTypes from 'prop-types'
-import { fetchTransactions } from '../../service'
+import { fetchTransactions, updateTransactionStatus } from '../../service'
 import Table from './components/table';
 import TransactionModal from '../detail/Modal';
 import _ from 'lodash'
@@ -33,6 +33,7 @@ class Page extends Component {
     this.handleCloseTransactionModal = this.handleCloseTransactionModal.bind(this);
     this.handleFetchTransactions = this.handleFetchTransactions.bind(this);
     this.handleDeleteSuccess = this.handleDeleteSuccess.bind(this);
+    this.handleUpdateStatus = this.handleUpdateStatus.bind(this);
   }
 
   componentDidMount() {
@@ -41,6 +42,12 @@ class Page extends Component {
   }
 
   componentDidUpdate() {}
+
+  handleUpdateStatus = (id, status, userId) => {
+    this.props.dispatch(updateTransactionStatus(id, {status, userId})).then(() => {
+      this.handleFetchTransactions();
+    });
+  }
 
   handleDeleteSuccess = () => {
     const {transactions, page} = this.state;
@@ -136,6 +143,7 @@ class Page extends Component {
           handleChangePage={this.handleChangePage}
           handleRequestSort={this.handleRequestSort}
           onViewTransaction={this.handleViewTransaction}
+          onUpdateTransactionStatus={this.handleUpdateStatus}
           {...state}
           {...props}
         />

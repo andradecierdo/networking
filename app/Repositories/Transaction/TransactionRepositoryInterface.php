@@ -17,4 +17,6 @@ interface TransactionRepositoryInterface
     public function findByIdWithUser(int $id);
 
     public function updateStatus(string $status);
+
+    public function updateStatusByIdAndsUser(int $id, int $userId, string $status);
 }

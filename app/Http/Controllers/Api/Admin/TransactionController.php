@@ -51,11 +51,12 @@ class TransactionController extends Controller
         return $this->transactionRepository->findByIdWithUser($id);
     }
 
-    public function updateStatus($id, $status)
+    public function updateStatus(Request $request, $id)
     {
-        $user = Auth::user();
-        return $this->transactionRepository
-            ->findByIdAndUser($user->id, $id)
-            ->updateStatus($status);
+        $status = $request->get('status');
+        $userId = $request->get('user_id');
+        $this->transactionRepository->updateStatusByIdAndsUser($id, $userId, $status);
+
+        return response(['success' => true], 200);
     }
 }

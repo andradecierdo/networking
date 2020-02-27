@@ -13,7 +13,7 @@ import TableHead from './../../../../../../../common/table/Head';
 import TableToolbar from './Toolbar';
 import Pagination from '../../../../../../../common/table/Pagination';
 import { IconButton, Tooltip } from '@material-ui/core';
-import { Edit as EditIcon, Input as DeputizeIcon, Launch as ViewIcon } from '@material-ui/icons';
+import { Edit as EditIcon, Launch as ViewIcon, CheckCircleOutline } from '@material-ui/icons';
 
 const fields = [
   { id: 'username', numeric: false, disablePadding: false, sortable: true, label: 'Account name' },
@@ -50,11 +50,17 @@ class CompanyTable extends React.Component {
     orderBy: PropTypes.string,
     page: PropTypes.number,
     onViewTransaction: PropTypes.func,
+    onUpdateTransactionStatus: PropTypes.func,
   };
 
-  handleViewCompany = (id) => {
+  handleViewTransaction = (id) => {
     this.props.onViewTransaction(id);
   };
+
+  handleUpdateTransactionStatus = (id, status, userId) => {
+    this.props.onUpdateTransactionStatus(id, status, userId);
+  };
+
 
   render() {
     const {
@@ -93,7 +99,7 @@ class CompanyTable extends React.Component {
                     <TableCell>{row.createdAt.format('MMMM, DD YYYY')}</TableCell>
                     <TableCell>
                       <Tooltip title="View">
-                        <IconButton onClick={() => this.handleViewCompany(row.id)} aria-label="View">
+                        <IconButton onClick={() => this.handleViewTransaction(row.id)} aria-label="View">
                           <ViewIcon/>
                         </IconButton>
                       </Tooltip>
@@ -103,6 +109,14 @@ class CompanyTable extends React.Component {
                             <EditIcon/>
                           </IconButton>
                         </Link>
+                      </Tooltip>
+                      <Tooltip title="View">
+                        <IconButton
+                          onClick={() => this.handleUpdateTransactionStatus(row.id,'approved', row.user.id)}
+                          aria-label="Approved"
+                        >
+                          <CheckCircleOutline/>
+                        </IconButton>
                       </Tooltip>
                     </TableCell>
                   </TableRow>

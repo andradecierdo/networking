@@ -50,7 +50,7 @@ export function deleteTransaction(id) {
 }
 
 export function addTransaction(data) {
-  return dispatch => (
+  return () => (
     new Promise((resolve, reject) => {
       Http.post(`/admin/transactions`, data)
         .then((res) => {
@@ -65,9 +65,23 @@ export function addTransaction(data) {
 }
 
 export function editTransaction(data, id) {
-  return dispatch => (
+  return () => (
     new Promise((resolve, reject) => {
       Http.put(`/admin/transactions/${id}`, data)
+        .then(() => {
+          return resolve(data);
+        })
+        .catch((err) => {
+          return reject(processError(err));
+        })
+    })
+  );
+}
+
+export function updateTransactionStatus(id, data) {
+  return () => (
+    new Promise((resolve, reject) => {
+      Http.put(`/admin/transactions/${id}/update-status`, Transformer.send(data))
         .then(() => {
           return resolve(data);
         })

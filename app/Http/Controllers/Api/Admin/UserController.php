@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\UpdateUserRequest;
+use App\Http\Requests\AdminUpdateUserRequest;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
 use App\Repositories\User\UserRepositoryInterface;
@@ -72,7 +72,7 @@ class UserController extends Controller
         }
     }
 
-    public function update(UpdateUserRequest $request, User $user)
+    public function update(AdminUpdateUserRequest $request, User $user)
     {
         $user = $this->userRepository
             ->setModel($user)

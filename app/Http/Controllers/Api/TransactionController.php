@@ -59,7 +59,7 @@ class TransactionController extends Controller
                 'transaction_number' => $transactionNumber,
                 'type' => $data['type'],
                 'amount' => $value,
-                'status' => 'active',
+                'status' => 'pending',
             ];
             $userData = [];
             if ($data['type'] === 'encash' && $user->balance >= $value) {

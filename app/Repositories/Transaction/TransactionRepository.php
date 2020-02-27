@@ -60,7 +60,17 @@ class TransactionRepository extends BaseRepository implements TransactionReposit
 
     public function updateStatus(string $status)
     {
-         $this->model->update(['status', $status]);
+         $this->model->update(['status' => $status]);
          return $this->model;
+    }
+
+    public function updateStatusByIdAndsUser(int $id, int $userId, string $status)
+    {
+        $this->model->whereUserId($userId)
+            ->whereId($id)
+            ->firstOrfail()
+            ->update(['status' => $status]);
+
+        return $this->model;
     }
 }

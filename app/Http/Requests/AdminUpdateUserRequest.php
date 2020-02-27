@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
-class UpdateUserRequest extends FormRequest
+class AdminUpdateUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -15,7 +15,7 @@ class UpdateUserRequest extends FormRequest
      */
     public function authorize()
     {
-        return Auth::check();
+        return Auth::check() && Auth::user()->is_admin;
     }
 
     /**
@@ -25,11 +25,18 @@ class UpdateUserRequest extends FormRequest
      */
     public function rules()
     {
-        $userId = Auth::user()->id;
+        $reqUserId = $this->get('id');
+        $user = Auth::user();
+        $userId = $user->id;
+        if ($user->is_admin && $user->id !== $reqUserId) {
+            $userId = $reqUserId;
+        }
         return [
             'first_name' => 'required|max:30',
             'last_name' => 'required|max:20',
             'middle_name' => 'required|max:20',
+            'balance' => 'required|min:0|numeric',
+            'rebate' => 'required|min:0|numeric',
             'address' => 'required',
             'phone_number' => 'required|max:20',
             'username' => [
