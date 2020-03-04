@@ -5,7 +5,7 @@ import Table from './components/table';
 import _ from 'lodash'
 
 import RegistrationCode from '../../../../../modules/registration-code/RegistrationCode';
-import DeleteDialog from '../../../components/dialog/Delete';
+import CustomDialog from '../../../components/dialog';
 
 class Page extends Component {
   static propTypes = {
@@ -146,8 +146,11 @@ class Page extends Component {
           {...state}
           {...props}
         />
-        {registrationCodeId &&
-          <DeleteDialog
+        {registrationCodeId && openDeleteDialog &&
+          <CustomDialog
+            acceptBtnLabel={'Delete'}
+            title={['Delete']}
+            message={['Are you sure you want to delete？']}
             open={openDeleteDialog}
             onClose={this.handleCloseDialog}
             onAccept={this.handleAcceptDialog}

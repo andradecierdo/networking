@@ -39,7 +39,7 @@ const styles = theme => ({
   },
 });
 
-class CompanyTable extends React.Component {
+class TransactionTable extends React.Component {
   static propTypes = {
     classes: PropTypes.object.isRequired,
     list: PropTypes.object,
@@ -60,7 +60,6 @@ class CompanyTable extends React.Component {
   handleUpdateTransactionStatus = (id, status, userId) => {
     this.props.onUpdateTransactionStatus(id, status, userId);
   };
-
 
   render() {
     const {
@@ -103,13 +102,13 @@ class CompanyTable extends React.Component {
                           <ViewIcon/>
                         </IconButton>
                       </Tooltip>
-                      <Tooltip title="Edit">
-                        <Link to={`/admin/transactions/${row.id}`}>
-                          <IconButton aria-label="Edit">
-                            <EditIcon/>
-                          </IconButton>
-                        </Link>
-                      </Tooltip>
+                      {/*<Tooltip title="Edit">*/}
+                        {/*<Link to={`/admin/transactions/${row.id}`}>*/}
+                          {/*<IconButton aria-label="Edit">*/}
+                            {/*<EditIcon/>*/}
+                          {/*</IconButton>*/}
+                        {/*</Link>*/}
+                      {/*</Tooltip>*/}
                       <Tooltip title="View">
                         <IconButton
                           onClick={() => this.handleUpdateTransactionStatus(row.id,'approved', row.user.id)}
@@ -143,4 +142,4 @@ class CompanyTable extends React.Component {
   }
 }
 
-export default withStyles(styles)(CompanyTable);
+export default withStyles(styles)(TransactionTable);

@@ -38,7 +38,7 @@ class UserRequest extends FormRequest
             'email' =>  'unique:users',
             'password' => 'required|min:6|confirmed',
             'password_confirmation' => 'required|min:6',
-            'parent_id' => 'nullable|exists:users',
+            'parent_id' => 'nullable|exists:users,id',
         ];
     }
 

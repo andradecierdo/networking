@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import * as PropTypes from 'prop-types'
-import { fetchUsers } from '../../service'
+import { searchUsers } from '../../service'
 import Table from './components/table';
 import UserModal from '../detail/Modal';
 import _ from 'lodash'
@@ -17,9 +17,11 @@ class Page extends Component {
     super(props);
 
     this.state = {
+      exceptions: [props.user.id],
+      relations: ['parent'],
       order: 'desc',
-      orderBy: 'ins_time',
-      query: '',
+      orderBy: 'created_at',
+      keyword: '',
       page: 1,
       openUserModal: false,
       userId: null,
@@ -54,16 +56,18 @@ class Page extends Component {
 
   handleFetchUsers = (params) => {
     let queryParams = _.clone(params);
-    const {order, orderBy, query, page} = this.state;
+    const {order, orderBy, keyword, page, relations, exceptions} = this.state;
     if (_.isEmpty(params)) {
       queryParams = {
+        exceptions,
+        relations,
         order,
         orderBy,
-        query,
+        keyword,
         page,
       }
     }
-    this.props.dispatch(fetchUsers(queryParams)).then(data => {
+    this.props.dispatch(searchUsers(queryParams)).then(data => {
       data.data = data.data.map((user) => new User(user));
       this.setState({
         users: {
@@ -90,8 +94,8 @@ class Page extends Component {
     this.setState({
       page: 1,
       order: 'desc',
-      orderBy: 'ins_time',
-      query: event.target.value,
+      orderBy: 'created_at',
+      keyword: event.target.value,
     }, () => {
       this.handleFetchUsers();
     });

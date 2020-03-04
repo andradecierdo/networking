@@ -12,7 +12,7 @@ import TableHead from './../../../../../../../common/table/Head';
 import TableToolbar from './Toolbar';
 import Pagination from '../../../../../../../common/table/Pagination';
 import { IconButton, Tooltip } from '@material-ui/core';
-import { Remove as DeleteIcon } from '@material-ui/icons';
+import { DeleteForever as DeleteIcon } from '@material-ui/icons';
 
 const fields = [
   { id: 'passcode', numeric: false, disablePadding: false, sortable: true, label: 'Passcode' },

@@ -57,4 +57,45 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
             ->whereId($id)
             ->firstOrfail();
     }
+
+    public function search(array $relations, array $searchData, $limit = 20)
+    {
+        $keyword = $searchData['keyword'];
+        $exceptions = $searchData['exceptions'];
+        $order = $searchData['order'];
+        $orderBy = $searchData['orderBy'];
+        $query = $this->model->newQuery();
+
+        if (count($relations)) {
+            $query->with($relations);
+        }
+
+        if (count($exceptions)) {
+            $query->whereNotIn('id', $exceptions);
+        }
+
+        if ($orderBy && $order) {
+            $query->orderBy($orderBy, $order);
+        }
+
+        if ($keyword) {
+            $query->where(function ($query) use ($keyword) {
+                $query->where('first_name', 'like', "%{$keyword}%")
+                    ->orWhere('username', 'like', "%{$keyword}%")
+                    ->orWhere('last_name', 'like', "%{$keyword}%")
+                    ->orWhere('status', 'like', "%{$keyword}%");
+            });
+        }
+
+        return $query->paginate($limit);
+    }
+
+    public function loadNonAdminWithParent($limit = 20)
+    {
+        return $this->model
+            ->isNotAdmin()
+            ->with('parent')
+            ->latest()
+            ->paginate($limit);
+    }
 }

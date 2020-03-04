@@ -10,7 +10,7 @@ use App\Repositories\User\UserRepositoryInterface;
 use App\Repositories\RegistrationCode\RegistrationCodeRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Exception;
 
@@ -36,6 +36,23 @@ class UserController extends Controller
     }
 
     /**
+     * Search a listing of the resource.
+     *
+     * @param Request $request
+     * @return LengthAwarePaginator|mixed
+     */
+    public function search(Request $request)
+    {
+        $relations = $request->relations ?? [];
+        $searchData['keyword'] = $request->keyword ?? null;
+        $searchData['exceptions'] = $request->exceptions ?? [];
+        $searchData['order'] = $request->order ?? null;
+        $searchData['orderBy'] = $request->orderBy ?? null;
+
+        return $this->userRepository->search($relations, $searchData);
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @param Request $request
@@ -43,15 +60,16 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $user = Auth::user();
-        return $this->userRepository->loadAllByParentWithParent($user->id);
+        return $this->userRepository->loadNonAdminWithParent();
     }
 
     public function store(UserRequest $request)
     {
         $userData = $request->validated();
         $userData['password'] = bcrypt($userData['password']);
-        $userData['parent_id'] = Auth::user()->id;
+        if (empty($userData['parent_id'])) {
+            $userData['parent_id'] = Auth::user()->id;
+        }
 
         DB::beginTransaction();
         try {
@@ -74,9 +92,16 @@ class UserController extends Controller
 
     public function update(AdminUpdateUserRequest $request, User $user)
     {
+        $userData = $request->validated();
+        if (empty($userData['parent_id'])) {
+            $userData['parent_id'] = Auth::user()->id;
+        }
+        if (!empty($userData['password'])) {
+            $userData['password'] = bcrypt($userData['password']);
+        }
         $user = $this->userRepository
             ->setModel($user)
-            ->update($request->validated());
+            ->update($userData);
 
         return response()->json($user, 201);
     }

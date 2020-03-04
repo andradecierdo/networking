@@ -2,8 +2,9 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import _ from 'lodash'
 import ReeValidate from 'ree-validate'
-import {fetchUserDetail, addUser, editUser,} from '../../service'
+import {searchUsers, fetchUserDetail, addUser, editUser,} from '../../service'
 import Form from './components/Form';
+import User from "../../../../user/User";
 
 class Page extends Component {
   static displayName = 'UserPage'
@@ -20,6 +21,7 @@ class Page extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
 
     const inputValidations = {
+      parentId: 'required',
       firstName: 'required|max:30',
       lastName: 'required|max:20',
       middleName: 'required|max:20',
@@ -29,6 +31,7 @@ class Page extends Component {
       phoneNumber: 'required',
       username: 'required|max:20|min:6',
       email: 'email',
+      showPassword: '',
       password: 'required|min:6',
       passwordConfirmation: 'required|min:6'
     };
@@ -42,6 +45,7 @@ class Page extends Component {
 
     this.state = {
       credentials: {
+        parentId: null,
         passcode: '',
         securityCode: '',
         firstName: '',
@@ -53,9 +57,12 @@ class Page extends Component {
         phoneNumber: '',
         username: '',
         email: '',
+        showPassword: 'false',
         password: '',
         passwordConfirmation: '',
       },
+      users: [],
+      loaded: false,
       mode: 'create',
       openModal: false,
       errors: this.validator.errors,
@@ -66,6 +73,18 @@ class Page extends Component {
   componentDidMount() {
     window.scrollTo(0, 0);
     this.handleParamChange();
+    const queryParams = {
+      exceptions: [this.props.id],
+    }
+    this.props.dispatch(searchUsers(queryParams))
+      .then((data) => {
+        const users = data.data.map((user) => new User(user));
+        this.setState({
+          ...this.state,
+          users,
+          loaded: true,
+        });
+      });
   }
 
   setCredentials(user, name) {
@@ -101,6 +120,10 @@ class Page extends Component {
     errors.remove(name);
     this.validator.validate(name, value)
         .then(() => {
+          if (name === 'showPassword' && value === 'false') {
+            errors.remove('password');
+            errors.remove('passwordConfirmation');
+          }
           this.setState({errors});
         });
   }
@@ -108,12 +131,18 @@ class Page extends Component {
   handleSubmit(e) {
     e.preventDefault()
     const { credentials } = this.state
+    const credentialsCopy = _.cloneDeep(credentials);
     const { errors } = this.validator
 
-    this.validator.validateAll(credentials)
+    if (credentialsCopy.showPassword === 'false') {
+      delete credentialsCopy.password
+      delete credentialsCopy.passwordConfirmation
+    }
+
+    this.validator.validateAll(credentialsCopy)
       .then((success) => {
         if (success) {
-          this.submit(credentials)
+          this.submit(credentialsCopy)
         } else {
           this.setState({ errors })
         }
@@ -155,6 +184,7 @@ class Page extends Component {
 
   render() {
     const {
+      parentId,
       passcode,
       securityCode,
       firstName,
@@ -166,10 +196,12 @@ class Page extends Component {
       phoneNumber,
       username,
       email,
+      showPassword,
       password,
       passwordConfirmation
     } = this.state.credentials;
     const props = {
+      parentId,
       passcode,
       securityCode,
       firstName,
@@ -181,8 +213,10 @@ class Page extends Component {
       phoneNumber,
       username,
       email,
+      showPassword,
       password,
       passwordConfirmation,
+      users: this.state.users,
       mode: this.state.mode,
       dispatch: this.props.dispatch,
       handleSubmit: this.handleSubmit,
@@ -193,7 +227,9 @@ class Page extends Component {
 
     return (
       <React.Fragment>
+        {this.state.loaded &&
         <Form {...props}/>
+        }
       </React.Fragment>
     );
   }

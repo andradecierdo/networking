@@ -107,4 +107,9 @@ class User extends Authenticatable
         return $query->where('is_admin', 1);
     }
 
+    public function scopeIsNotAdmin(Builder $query): Builder
+    {
+        return $query->where('is_admin', 0);
+    }
+
 }

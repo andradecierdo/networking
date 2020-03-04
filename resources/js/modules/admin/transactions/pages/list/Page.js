@@ -3,6 +3,7 @@ import * as PropTypes from 'prop-types'
 import { fetchTransactions, updateTransactionStatus } from '../../service'
 import Table from './components/table';
 import TransactionModal from '../detail/Modal';
+import CustomDialog from '../../../components/dialog';
 import _ from 'lodash'
 
 import Transaction from '../../../../../modules/transaction/Transaction';
@@ -22,8 +23,14 @@ class Page extends Component {
       query: '',
       page: 1,
       openTransactionModal: false,
+      openApprovalDialog: false,
       transactionId: null,
       transactions: {},
+      approval: {
+        id: null,
+        status: null,
+        userId: null,
+      }
     };
 
     this.handleChangePage = this.handleChangePage.bind(this);
@@ -34,6 +41,11 @@ class Page extends Component {
     this.handleFetchTransactions = this.handleFetchTransactions.bind(this);
     this.handleDeleteSuccess = this.handleDeleteSuccess.bind(this);
     this.handleUpdateStatus = this.handleUpdateStatus.bind(this);
+
+    this.handleAcceptApprovalDialog = this.handleAcceptApprovalDialog.bind(this);
+    this.handleCancelApprovalDialog = this.handleCancelApprovalDialog.bind(this);
+    this.handleCloseApprovalDialog = this.handleCloseApprovalDialog.bind(this);
+    this.setDefaultApproval = this.setDefaultApproval.bind(this);
   }
 
   componentDidMount() {
@@ -43,10 +55,45 @@ class Page extends Component {
 
   componentDidUpdate() {}
 
+  setDefaultApproval = () => {
+    this.setState({
+      openApprovalDialog: false,
+      approval: {
+        id: null,
+        status: null,
+        userId: null,
+      }
+    })
+  }
+
+  handleCloseApprovalDialog = () => {
+    this.setDefaultApproval()
+  };
+
+  handleAcceptApprovalDialog = () => {
+    const {id, status, userId} = this.state.approval;
+    if (!_.isNil(id) && !_.isNil(status) && !_.isNil(userId)) {
+      this.props.dispatch(updateTransactionStatus(id, {status, userId})).then(() => {
+        this.setDefaultApproval()
+        this.handleFetchTransactions();
+      });
+    }
+  };
+
+  handleCancelApprovalDialog = () => {
+    this.setDefaultApproval()
+  };
+
   handleUpdateStatus = (id, status, userId) => {
-    this.props.dispatch(updateTransactionStatus(id, {status, userId})).then(() => {
-      this.handleFetchTransactions();
-    });
+    this.setState({
+      ...this.state,
+      openApprovalDialog: true,
+      approval: {
+        id,
+        status,
+        userId,
+      }
+    })
   }
 
   handleDeleteSuccess = () => {
@@ -129,7 +176,7 @@ class Page extends Component {
   render() {
     const props = this.props;
     const state = this.state;
-    const {openTransactionModal, transactionId, transactions} = state;
+    const {openTransactionModal, transactionId, transactions, openApprovalDialog} = state;
 
     if (_.isEmpty(transactions)) {
       return <div/>;
@@ -156,6 +203,18 @@ class Page extends Component {
               open={openTransactionModal}
             />
           }
+        {openApprovalDialog &&
+          <CustomDialog
+            acceptBtnColor={'primary'}
+            acceptBtnLabel={'Approve'}
+            title={['Confirmation']}
+            message={['Are you sure you want to approve transaction？']}
+            open={openApprovalDialog}
+            onClose={this.handleCloseApprovalDialog}
+            onAccept={this.handleAcceptApprovalDialog}
+            onCancel={this.handleCancelApprovalDialog}
+          />
+        }
       </React.Fragment>
     );
   }

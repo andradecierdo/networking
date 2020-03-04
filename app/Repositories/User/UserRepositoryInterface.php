@@ -10,6 +10,10 @@ interface UserRepositoryInterface
 
     public function loadAll();
 
+    public function loadNonAdminWithParent();
+
+    public function search(array $relations, array $searchData);
+
     public function loadAllByParentWithParent(int $parentId);
 
     public function loadAllByParent(int $parentId);

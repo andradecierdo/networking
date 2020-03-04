@@ -20,6 +20,21 @@ export function fetchUsers(params = null) {
   )
 }
 
+export function searchUsers(params = {}) {
+  return () => (
+    new Promise((resolve, reject) => {
+      Http.get(`/admin/users/search`, {params})
+        .then((res) => {
+          const data = Transformer.fetch(res.data);
+          return resolve(data);
+        })
+        .catch((err) => {
+          return reject(processError(err));
+        })
+    })
+  )
+}
+
 export function fetchUserDetail(id) {
   return () => (
     new Promise((resolve, reject) => {

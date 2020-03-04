@@ -29,15 +29,21 @@ class ConfirmationDialog extends React.PureComponent {
     onClose: PropTypes.func.isRequired,
     open: PropTypes.bool.isRequired,
     message: PropTypes.array,
-    title: PropTypes.array
+    title: PropTypes.array,
+    acceptBtnLabel: PropTypes.string,
+    acceptBtnColor: PropTypes.string,
+    cancelBtnLabel: PropTypes.string,
   };
 
   constructor(props) {
     super(props);
 
     this.state = {
-      message: props.message || ['Are you sure you want to delete？'],
-      title: props.title || ['Delete'],
+      message: props.message || ['Are you sure？'],
+      title: props.title || ['Confirmation'],
+      acceptBtnColor: props.acceptBtnColor || 'secondary',
+      acceptBtnLabel: props.acceptBtnLabel || 'OK',
+      cancelBtnLabel: props.cancelBtnLabel || 'Cancel',
     };
 
     this.handleCancel = this.handleCancel.bind(this);
@@ -59,7 +65,13 @@ class ConfirmationDialog extends React.PureComponent {
 
   render() {
     const { open } = this.props;
-    const { message, title } = this.state;
+    const {
+      message,
+      title,
+      acceptBtnLabel,
+      cancelBtnLabel,
+      acceptBtnColor,
+    } = this.state;
     return (
       <Dialog
         open={open}
@@ -77,14 +89,14 @@ class ConfirmationDialog extends React.PureComponent {
             onClick={this.handleCancel}
             color="default"
             variant="outlined">
-            Cancel
+            {cancelBtnLabel}
           </Button>
           <Button
             onClick={this.handleAccept}
-            color="primary"
+            color={acceptBtnColor}
             variant="outlined"
             autoFocus>
-            Delete
+            {acceptBtnLabel}
           </Button>
         </DialogActions>
       </Dialog>

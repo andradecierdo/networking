@@ -20,10 +20,10 @@ const fields = [
   { id: 'first_name', numeric: false, disablePadding: false, sortable: true, label: 'First Name' },
   { id: 'last_name', numeric: false, disablePadding: false, sortable: true, label: 'Last Name' },
   { id: 'phone_number', numeric: false, disablePadding: false, sortable: true, label: 'Contact No.' },
-  { id: 'parent', numeric: false, disablePadding: false, sortable: true, label: 'Upline' },
-  { id: 'status', numeric: false, disablePadding: false, sortable: false, label: 'Status' },
-  { id: 'balance', numeric: false, disablePadding: false, sortable: true, label: 'Balance' },
-  { id: 'rebate', numeric: false, disablePadding: false, sortable: true, label: 'Rebate' },
+  { id: 'parent', numeric: false, disablePadding: false, sortable: false, label: 'Upline' },
+  { id: 'status', numeric: false, disablePadding: false, sortable: true, label: 'Status' },
+  { id: 'balance', numeric: true, disablePadding: false, sortable: true, label: 'Balance' },
+  { id: 'rebate', numeric: true, disablePadding: false, sortable: true, label: 'Rebate' },
   { id: 'created_at', numeric: false, disablePadding: false, sortable: true, label: 'Date Created' },
   { id: 'action', numeric: false, disablePadding: false, sortable: false, label: '' },
 ];
@@ -88,7 +88,9 @@ class UserTable extends React.Component {
                     <TableCell>{row.firstName}</TableCell>
                     <TableCell>{row.lastName}</TableCell>
                     <TableCell>{row.phoneNumber}</TableCell>
-                    <TableCell>{`${row.parent.firstName} ${row.parent.lastName} `}</TableCell>
+                    <TableCell>
+                      {row.parent && `${row.parent.firstName} ${row.parent.lastName} `}
+                      </TableCell>
                     <TableCell>{row.status}</TableCell>
                     <TableCell>{row.balance}</TableCell>
                     <TableCell>{row.rebate}</TableCell>

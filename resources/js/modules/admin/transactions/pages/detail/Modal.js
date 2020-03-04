@@ -16,14 +16,14 @@ import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 
 import Transaction from '../../../../../modules/transaction/Transaction';
-import DeleteDialog from '../../../components/dialog/Delete';
+import CustomDialog from '../../../components/dialog';
 
 import {
   fetchTransactionDetail,
   deleteTransaction,
 } from '../../service';
 
-class CompanyModal extends Component {
+class TransactionModal extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
@@ -163,7 +163,9 @@ class CompanyModal extends Component {
                   </TableRow>
                   <TableRow>
                     <TableCell className={classes.labelCell}>Approved By</TableCell>
-                    <TableCell>{`${transaction.approver.firstName} ${transaction.approver.lastName} `}</TableCell>
+                    <TableCell>
+                      {transaction.approver && `${transaction.approver.firstName} ${transaction.approver.lastName} `}
+                    </TableCell>
                   </TableRow>
                 </TableBody>
               </Table>
@@ -187,12 +189,17 @@ class CompanyModal extends Component {
               </div>
             </Paper>
           </Modal>
-          <DeleteDialog
-            open={openDialog}
-            onClose={this.handleCloseDialog}
-            onAccept={this.handleAcceptDialog}
-            onCancel={this.handleCancelDialog}
-          />
+          {openDialog &&
+            <CustomDialog
+              acceptBtnLabel={'Delete'}
+              title={['Delete']}
+              message={['Are you sure you want to delete？']}
+              open={openDialog}
+              onClose={this.handleCloseDialog}
+              onAccept={this.handleAcceptDialog}
+              onCancel={this.handleCancelDialog}
+            />
+          }
         </div>
       );
     }
@@ -200,4 +207,4 @@ class CompanyModal extends Component {
   }
 }
 
-export default withStyles(styles)(CompanyModal);
+export default withStyles(styles)(TransactionModal);

@@ -13,11 +13,18 @@ import {
   InputLabel,
   FormHelperText,
   Divider,
+  Select,
+  MenuItem,
+  FormControlLabel,
+  FormGroup,
+  Switch,
 } from '@material-ui/core';
 
 const displayName = 'RegisterForm';
 
 const propTypes = {
+  users: PropTypes.array.isRequired,
+  parentId: PropTypes.number.isRequired,
   passcode: PropTypes.string.isRequired,
   securityCode: PropTypes.string.isRequired,
   firstName: PropTypes.string.isRequired,
@@ -27,6 +34,7 @@ const propTypes = {
   phoneNumber: PropTypes.string.isRequired,
   username: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
+  showPassword: PropTypes.string.isRequired,
   password: PropTypes.string.isRequired,
   passwordConfirmation: PropTypes.string.isRequired,
   errors: PropTypes.object.isRequired,
@@ -93,6 +101,38 @@ const styles = theme => ({
   },
 });
 
+
+const ParentUsers = ({errors, name, value, onChange, label, isRequired, className, selections}) => (
+  <FormControl
+    required={isRequired !== false}
+    fullWidth
+    error={errors.has(name)}
+    className={className}
+  >
+    <InputLabel htmlFor={name}>{label}</InputLabel>
+    <Select
+      value={value}
+      onChange={onChange}
+      name={name}
+      id={name}
+    >
+      {selections.map(item => {
+        return (
+          <MenuItem
+            key={`menu-${item.id}`}
+            value={item.id}
+          >
+            {`${item.firstName} ${item.lastName}`}
+          </MenuItem>
+        )
+      })}
+    </Select>
+    <FormHelperText id="component-error-text">
+      {errors.has(name) ? errors.first(name) : ''}
+    </FormHelperText>
+  </FormControl>
+)
+
 const InputWrapper = ({errors, name, value, onChange, label, type, isRequired, className, focus = false}) => (
   <FormControl
       required={isRequired !== false} fullWidth
@@ -127,19 +167,23 @@ const EmailAddField = ({mode, state, onchange, ...props}) => {
   )
 }
 
-const PasswordField = ({mode, onchange, ...props}) => {
-  return (
-    <div>
-    <InputWrapper name="password" type="password" errors={props.errors}
-                  value={props.password}
-                  onChange={onchange}
-                  label="Password"/>
-    <InputWrapper name="passwordConfirmation" type="password" errors={props.errors}
-                  value={props.passwordConfirmation}
-                  onChange={onchange}
-                  label="Password confirmation"/>
-  </div>
-  )
+const PasswordField = ({mode, state, onchange, ...props}) => {
+  if (mode === 'create' || (mode === 'edit' && state === 'true')) {
+    return (
+      <div>
+        <InputWrapper name="password" type="password" errors={props.errors}
+                      value={props.password}
+                      onChange={onchange}
+                      label="Password"/>
+        <InputWrapper name="passwordConfirmation" type="password" errors={props.errors}
+                      value={props.passwordConfirmation}
+                      onChange={onchange}
+                      label="Password confirmation"/>
+      </div>
+    )
+  }
+
+  return null;
 }
 
 class Form extends Component {
@@ -168,6 +212,9 @@ class Form extends Component {
   }
 
   handleChange(e) {
+    if (e.target.name === 'showPassword') {
+      e.target.value = e.target.checked;
+    }
     return this.props.onChange(e.target.name, e.target.value);
   }
 
@@ -179,6 +226,9 @@ class Form extends Component {
       errors,
       dispatch,
       history,
+      users,
+      parentId,
+      showPassword,
       password,
       passwordConfirmation,
       mode,
@@ -249,6 +299,14 @@ class Form extends Component {
                 />
               </React.Fragment>
               }
+              <ParentUsers
+                name="parentId"
+                errors={errors}
+                value={parentId}
+                onChange={this.handleChange}
+                label="Upline"
+                selections={users}
+              />
               <InputWrapper
                 name="username"
                 type="text"
@@ -257,7 +315,6 @@ class Form extends Component {
                 onChange={this.handleChange}
                 label="Username"
               />
-              <Divider/>
               <InputWrapper
                 name="lastName"
                 type="text"
@@ -319,8 +376,23 @@ class Form extends Component {
                 onchange={this.handleChange}
                 {...props}
               />
+              {mode === 'edit' &&
+              <FormGroup row>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      value={showPassword || 'false'}
+                      checked={showPassword === 'true'}
+                      onChange={this.handleChange}
+                      color="primary"
+                      name="showPassword"
+                    />
+                  }
+                  label="Show Password"/>
+              </FormGroup>}
               <PasswordField
                 mode={mode}
+                state={showPassword}
                 onchange={this.handleChange}
                 {...props}
               />

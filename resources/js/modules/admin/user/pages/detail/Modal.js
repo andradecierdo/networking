@@ -16,7 +16,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 
 import User from '../../../../../modules/user/User';
-import DeleteDialog from '../../../components/dialog/Delete';
+import CustomDialog from '../../../components/dialog';
 
 import {
   fetchUserDetail,
@@ -137,6 +137,10 @@ class CompanyModal extends Component {
                     <TableCell>{user.lastName}</TableCell>
                   </TableRow>
                   <TableRow>
+                    <TableCell className={classes.labelCell}>Middle Name</TableCell>
+                    <TableCell>{user.middleName}</TableCell>
+                  </TableRow>
+                  <TableRow>
                     <TableCell className={classes.labelCell}>Phone Number</TableCell>
                     <TableCell>{user.phoneNumber}</TableCell>
                   </TableRow>
@@ -162,7 +166,9 @@ class CompanyModal extends Component {
                   </TableRow>
                   <TableRow>
                     <TableCell className={classes.labelCell}>Upline</TableCell>
-                    <TableCell>{`${user.parent.firstName} ${user.parent.lastName} `}</TableCell>
+                    <TableCell>
+                      {user.parent && `${user.parent.firstName} ${user.parent.lastName} `}
+                      </TableCell>
                   </TableRow>
                 </TableBody>
               </Table>
@@ -186,12 +192,17 @@ class CompanyModal extends Component {
               </div>
             </Paper>
           </Modal>
-          <DeleteDialog
-            open={openDialog}
-            onClose={this.handleCloseDialog}
-            onAccept={this.handleAcceptDialog}
-            onCancel={this.handleCancelDialog}
-          />
+          {openDialog &&
+            <CustomDialog
+              acceptBtnLabel={'Delete'}
+              title={['Delete']}
+              message={['Are you sure you want to delete？']}
+              open={openDialog}
+              onClose={this.handleCloseDialog}
+              onAccept={this.handleAcceptDialog}
+              onCancel={this.handleCancelDialog}
+            />
+          }
         </div>
       );
     }
