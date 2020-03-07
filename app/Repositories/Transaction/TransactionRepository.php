@@ -37,6 +37,40 @@ class TransactionRepository extends BaseRepository implements TransactionReposit
             ->paginate($limit);
     }
 
+    public function search(array $relations, array $searchData, $limit = 20)
+    {
+        $userId = $searchData['userId'];
+        $keyword = $searchData['keyword'];
+        $order = $searchData['order'];
+        $orderBy = $searchData['orderBy'];
+        $query = $this->model->newQuery();
+
+        if (!is_null($userId)) {
+            $query->whereUserId($userId);
+        }
+
+        if (count($relations)) {
+            $query->with($relations);
+        }
+
+        if ($orderBy && $order) {
+            $query->orderBy($orderBy, $order);
+        }
+
+        if ($keyword) {
+            $query->where(function ($query) use ($keyword) {
+                $query->where('first_name', 'like', "%{$keyword}%")
+                    ->orWhere('username', 'like', "%{$keyword}%")
+                    ->orWhere('last_name', 'like', "%{$keyword}%")
+                    ->orWhere('status', 'like', "%{$keyword}%")
+                    ->orWhere('transaction_number', 'like', "%{$keyword}%")
+                    ->orWhere('amount', 'like', "%{$keyword}%");
+            });
+        }
+
+        return $query->paginate($limit);
+    }
+
     public function setModel(Transaction $model)
     {
         $this->model = $model;

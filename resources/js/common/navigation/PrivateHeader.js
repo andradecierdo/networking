@@ -20,11 +20,12 @@ const PrivateHeader = ({onRedirect, user, logout}) => (
     <Navbar.Collapse id="basic-navbar-nav">
       <Nav className="mr-auto">
         <NavLink exact to="/" className="nav-link">Home</NavLink>
+        <NavLink exact to="/dashboard" className="nav-link">Dashboard</NavLink>
         <NavLink exact to="/experiences" className="nav-link">Experiences</NavLink>
       </Nav>
       <Nav>
         <NavDropdown alignRight title={user.firstName} id="basic-nav-dropdown">
-          <NavDropdown.Item onClick={() => onRedirect(`/users/${user.id}/edit`)}>
+          <NavDropdown.Item onClick={() => onRedirect(`/users/edit`)}>
             <span className="fa fa-user-o" title="profile" aria-hidden="true"/> Profile
           </NavDropdown.Item>
           <NavDropdown.Divider />

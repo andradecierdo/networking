@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import * as PropTypes from 'prop-types'
-import { fetchRegistrationCodes, deleteRegistrationCode } from '../../service'
+import { searchRegistrationCodes, fetchRegistrationCodes, deleteRegistrationCode } from '../../service'
 import Table from './components/table';
 import _ from 'lodash'
 
@@ -17,9 +17,10 @@ class Page extends Component {
     super(props);
 
     this.state = {
+      relations: ['user'],
       order: 'desc',
-      orderBy: 'ins_time',
-      query: '',
+      orderBy: 'created_at',
+      keyword: '',
       page: 1,
       registrationCodes: {},
       openDeleteDialog: false,
@@ -76,16 +77,17 @@ class Page extends Component {
 
   handleFetchRegistrationCodes = (params) => {
     let queryParams = _.clone(params);
-    const {order, orderBy, query, page} = this.state;
+    const {order, orderBy, keyword, page, relations} = this.state;
     if (_.isEmpty(params)) {
       queryParams = {
         order,
         orderBy,
-        query,
+        keyword,
+        relations,
         page,
       }
     }
-    this.props.dispatch(fetchRegistrationCodes(queryParams)).then(data => {
+    this.props.dispatch(searchRegistrationCodes(queryParams)).then(data => {
       data.data = data.data.map((registrationCode) => new RegistrationCode(registrationCode));
       this.setState({
         registrationCodes: {
@@ -112,8 +114,8 @@ class Page extends Component {
     this.setState({
       page: 1,
       order: 'desc',
-      orderBy: 'ins_time',
-      query: event.target.value,
+      orderBy: 'created_at',
+      keyword: event.target.value,
     }, () => {
       this.handleFetchRegistrationCodes();
     });

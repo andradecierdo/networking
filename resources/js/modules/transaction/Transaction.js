@@ -13,6 +13,9 @@ class Transaction extends Model {
     super.initialize(props)
 
     this.id = props.id || null;
+    this.username = props.username || '';
+    this.lastName = props.lastName || '';
+    this.firstName = props.firstName || '';
     this.transactionNumber = props.transactionNumber || '';
     this.type = props.type || '';
     this.amount = props.amount || '';

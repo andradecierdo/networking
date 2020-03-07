@@ -3,7 +3,7 @@ import LoadingComponent from '../../common/loader/index'
 
 export default [
   {
-    path: '/users/:id/edit',
+    path: '/users/edit',
     exact: true,
     auth: true,
     strict: true,

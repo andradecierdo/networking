@@ -124,7 +124,7 @@ class Header extends Component {
             onClose={this.handleMenuClose}
         >
           <Link to="/admin/change-password">
-            <MenuItem onClick={this.handleMenuClose}>Close</MenuItem>
+            <MenuItem onClick={this.handleMenuClose}>Change Password</MenuItem>
           </Link>
           <MenuItem onClick={e => logout(e)}>Logout</MenuItem>
         </Menu>

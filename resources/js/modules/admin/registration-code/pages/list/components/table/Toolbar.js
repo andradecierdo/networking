@@ -12,7 +12,7 @@ let TableToolbar = props => {
     <div>
       <Toolbar className={classNames(classes.root)}>
         <Typography variant="h5" className={classes.title}>
-          List of Users
+          List of Registration Codes
         </Typography>
         <div className={classes.spacer}/>
         <div className={classes.actions}>

@@ -19,7 +19,7 @@ function PublicLayout(props) {
 
   return <div id="body">
     <Navigation {...props}/>
-    <main>
+    <main style={{minHeight: 'calc(100vh - 112px)'}}>
       {children}
     </main>
     <Footer/>

@@ -17,9 +17,9 @@ import { Edit as EditIcon, Launch as ViewIcon, CheckCircleOutline } from '@mater
 
 const fields = [
   { id: 'username', numeric: false, disablePadding: false, sortable: true, label: 'Account name' },
-  { id: 'user_contact_no', numeric: false, disablePadding: false, sortable: true, label: 'Contact No.' },
+  { id: 'user_contact_no', numeric: false, disablePadding: false, sortable: false, label: 'Contact No.' },
   { id: 'amount', numeric: false, disablePadding: false, sortable: true, label: 'Amount' },
-  { id: 'transaction_number', numeric: false, disablePadding: false, sortable: false, label: 'Transaction No.' },
+  { id: 'transaction_number', numeric: false, disablePadding: false, sortable: true, label: 'Transaction No.' },
   { id: 'status', numeric: false, disablePadding: false, sortable: true, label: 'Status' },
   { id: 'type', numeric: false, disablePadding: false, sortable: true, label: 'Type' },
   { id: 'created_at', numeric: false, disablePadding: false, sortable: true, label: 'Date Created' },
@@ -57,8 +57,10 @@ class TransactionTable extends React.Component {
     this.props.onViewTransaction(id);
   };
 
-  handleUpdateTransactionStatus = (id, status, userId) => {
-    this.props.onUpdateTransactionStatus(id, status, userId);
+  handleUpdateTransactionStatus = (id, transStatus, status, userId) => {
+    if (transStatus !== 'approved') {
+      this.props.onUpdateTransactionStatus(id, status, userId);
+    }
   };
 
   render() {
@@ -111,7 +113,8 @@ class TransactionTable extends React.Component {
                       {/*</Tooltip>*/}
                       <Tooltip title="View">
                         <IconButton
-                          onClick={() => this.handleUpdateTransactionStatus(row.id,'approved', row.user.id)}
+                          disabled={row.status === 'approved'}
+                          onClick={() => this.handleUpdateTransactionStatus(row.id, row.status,'approved', row.user.id)}
                           aria-label="Approved"
                         >
                           <CheckCircleOutline/>

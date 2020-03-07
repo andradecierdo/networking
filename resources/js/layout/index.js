@@ -25,9 +25,9 @@ class Layout extends Component {
   }
 
   render() {
-    const { children, admin, user, ...props} = this.props;
+    const { children, admin, forAdmin, user, ...props} = this.props;
 
-    if (this.props.isAuthenticated && user.isAdmin) {
+    if (this.props.isAuthenticated && user.isAdmin && forAdmin) {
       return <AdminLayout {...this.props}>{children}</AdminLayout>
     }
 

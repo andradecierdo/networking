@@ -131,11 +131,15 @@ class TransactionModal extends Component {
                 Transaction Detail
               </Typography>
               <br/>
-              <Table>
+              <Table striped>
                 <TableBody>
                   <TableRow>
+                    <TableCell className={classes.labelCell}>Username</TableCell>
+                    <TableCell>{transaction.username}</TableCell>
+                  </TableRow>
+                  <TableRow>
                     <TableCell className={classes.labelCell}>Account Name</TableCell>
-                    <TableCell>{`${transaction.user.firstName} ${transaction.user.lastName} `}</TableCell>
+                    <TableCell>{`${transaction.firstName} ${transaction.lastName} `}</TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell className={classes.labelCell}>User Contact No.</TableCell>
@@ -181,10 +185,17 @@ class TransactionModal extends Component {
                   <Button
                     className={classes.button}
                     variant="contained"
-                    color="primary"
-                    onClick={this.handleEdit}>
-                    Edit
+                    color="default"
+                    onClick={this.handleClose}>
+                    Close
                   </Button>
+                  {/*<Button*/}
+                    {/*className={classes.button}*/}
+                    {/*variant="contained"*/}
+                    {/*color="primary"*/}
+                    {/*onClick={this.handleEdit}>*/}
+                    {/*Edit*/}
+                  {/*</Button>*/}
                 </MuiThemeProvider>
               </div>
             </Paper>

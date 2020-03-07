@@ -13,7 +13,10 @@ import TableHead from './../../../../../../../common/table/Head';
 import TableToolbar from './Toolbar';
 import Pagination from '../../../../../../../common/table/Pagination';
 import { IconButton, Tooltip } from '@material-ui/core';
-import { Edit as EditIcon, Launch as ViewIcon } from '@material-ui/icons';
+import { Edit as EditIcon, Launch as ViewIcon, DeleteForever as DeleteIcon } from '@material-ui/icons';
+
+import CustomDialog from '../../../../../components/dialog';
+import {deleteUser} from "../../../../service";
 
 const fields = [
   { id: 'username', numeric: false, disablePadding: false, sortable: true, label: 'Username' },
@@ -52,10 +55,53 @@ class UserTable extends React.Component {
     orderBy: PropTypes.string,
     page: PropTypes.number,
     onViewUser: PropTypes.func,
+    onDeleteUser: PropTypes.func,
+  };
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      openDialog: false,
+      id: null,
+    };
+
+    this.handleAcceptDialog = this.handleAcceptDialog.bind(this);
+    this.handleCancelDialog = this.handleCancelDialog.bind(this);
+    this.handleCloseDialog = this.handleCloseDialog.bind(this);
+  }
+
+  handleCloseDialog = () => {
+    this.setState({
+      id: null,
+      openDialog: false
+    });
+  };
+
+  handleAcceptDialog = () => {
+    const id = _.clone(this.state.id);
+    this.setState({
+      id: null,
+      openDialog: false
+    }, () => this.props.onDeleteUser(id));
+  };
+
+  handleCancelDialog = () => {
+    this.setState({
+      id: null,
+      openDialog: false
+    });
   };
 
   handleViewUser = (id) => {
     this.props.onViewUser(id);
+  };
+
+  handleDeleteUser = (id) => {
+    this.setState({
+      id,
+      openDialog: true
+    });
   };
 
   render() {
@@ -68,6 +114,8 @@ class UserTable extends React.Component {
       orderBy,
       handleChangeText
     } = this.props;
+
+    const {openDialog, id} = this.state;
 
     return (
       <Paper className={classes.root}>
@@ -108,6 +156,11 @@ class UserTable extends React.Component {
                           </IconButton>
                         </Link>
                       </Tooltip>
+                      <Tooltip title="Delete">
+                        <IconButton onClick={() => this.handleDeleteUser(row.id)} aria-label="Delete">
+                          <DeleteIcon/>
+                        </IconButton>
+                      </Tooltip>
                     </TableCell>
                   </TableRow>
                 );
@@ -128,6 +181,17 @@ class UserTable extends React.Component {
             </TableFooter>
           </Table>
         </div>
+        {openDialog && id &&
+          <CustomDialog
+            acceptBtnLabel={'Delete'}
+            title={['Delete']}
+            message={['Are you sure you want to delete？']}
+            open={openDialog}
+            onClose={this.handleCloseDialog}
+            onAccept={this.handleAcceptDialog}
+            onCancel={this.handleCancelDialog}
+          />
+        }
       </Paper>
     );
   }

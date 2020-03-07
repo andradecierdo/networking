@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import * as PropTypes from 'prop-types'
-import { searchTransactions, fetchTransactions, updateTransactionStatus } from '../../service'
+import { searchTransactions, updateTransactionStatus } from '../../service'
+import { fetchUserDetail } from '../../../user/service'
 import Table from './components/table';
 import TransactionModal from '../detail/Modal';
 import CustomDialog from '../../../components/dialog';
 import _ from 'lodash'
+import User from '../../../../../modules/user/User'
 
 import Transaction from '../../../../../modules/transaction/Transaction';
 
@@ -22,6 +24,7 @@ class Page extends Component {
       order: 'desc',
       orderBy: 'created_at',
       keyword: '',
+      userId: props.userId,
       page: 1,
       openTransactionModal: false,
       openApprovalDialog: false,
@@ -31,7 +34,8 @@ class Page extends Component {
         id: null,
         status: null,
         userId: null,
-      }
+      },
+      user: new User({}),
     };
 
     this.handleChangePage = this.handleChangePage.bind(this);
@@ -51,6 +55,14 @@ class Page extends Component {
 
   componentDidMount() {
     window.scrollTo(0, 0);
+    this.props.dispatch(fetchUserDetail(this.state.userId)).then((data) => {
+      const user = new User(data)
+      this.setState({
+        ...this.state,
+        user,
+      });
+    })
+      .catch(() => this.props.history.push('/admin/transactions'));
     this.handleFetchTransactions();
   }
 
@@ -111,9 +123,10 @@ class Page extends Component {
 
   handleFetchTransactions = (params) => {
     let queryParams = _.clone(params);
-    const {order, orderBy, keyword, page, relations} = this.state;
+    const {order, orderBy, keyword, page, relations, userId} = this.state;
     if (_.isEmpty(params)) {
       queryParams = {
+        userId,
         order,
         orderBy,
         keyword,
@@ -178,7 +191,7 @@ class Page extends Component {
   render() {
     const props = this.props;
     const state = this.state;
-    const {openTransactionModal, transactionId, transactions, openApprovalDialog} = state;
+    const {user, openTransactionModal, transactionId, transactions, openApprovalDialog} = state;
 
     if (_.isEmpty(transactions)) {
       return <div/>;
@@ -186,6 +199,10 @@ class Page extends Component {
 
     return (
       <React.Fragment>
+        <div className={"col-lg-12"}>
+          <p>{user.firstName}</p>
+          <p>{user.lastName}</p>
+        </div>
         <Table
           list={transactions}
           handleChangeText={this.handleChangeText}

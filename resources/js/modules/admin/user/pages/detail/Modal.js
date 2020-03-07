@@ -188,6 +188,13 @@ class CompanyModal extends Component {
                     onClick={this.handleEdit}>
                     Edit
                   </Button>
+                  <Button
+                    className={classes.button}
+                    variant="contained"
+                    color="default"
+                    onClick={this.handleClose}>
+                    Close
+                  </Button>
                 </MuiThemeProvider>
               </div>
             </Paper>

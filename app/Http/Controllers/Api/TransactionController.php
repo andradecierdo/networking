@@ -56,6 +56,9 @@ class TransactionController extends Controller
         try {
             $transactionData = [
                 'user_id' => $user->id,
+                'username' => $user->username,
+                'last_name' => $user->last_name,
+                'first_name' => $user->first_name,
                 'transaction_number' => $transactionNumber,
                 'type' => $data['type'],
                 'amount' => $value,

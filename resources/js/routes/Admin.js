@@ -31,7 +31,7 @@ class Admin extends Component {
           return <Layout admin={admin}><Component {...props}/></Layout>;
         } else {
           if (user.isAdmin) {
-            return <Layout admin={admin}><Component {...props}/></Layout>;
+            return <Layout admin={admin} forAdmin={forAdmin}><Component {...props}/></Layout>;
           }
           return <Redirect to={{ pathname: '/', }}/>;
         }

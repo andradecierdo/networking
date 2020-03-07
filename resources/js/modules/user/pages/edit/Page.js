@@ -78,6 +78,7 @@ class Page extends Component {
   
   submit(user) {
     this.props.dispatch(userUpdateRequest(user))
+      .then(() => this.props.history.push('/dashboard'))
       .catch(({ error, statusCode }) => {
         const { errors } = this.validator
         

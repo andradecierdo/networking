@@ -12,13 +12,13 @@ import TableHead from './../../../../../../../common/table/Head';
 import TableToolbar from './Toolbar';
 import Pagination from '../../../../../../../common/table/Pagination';
 import { IconButton, Tooltip } from '@material-ui/core';
-import { DeleteForever as DeleteIcon } from '@material-ui/icons';
+import { Edit as EditIcon, Launch as ViewIcon, CheckCircleOutline } from '@material-ui/icons';
 
 const fields = [
-  { id: 'passcode', numeric: false, disablePadding: false, sortable: true, label: 'Passcode' },
-  { id: 'security_code', numeric: false, disablePadding: false, sortable: true, label: 'Security Code' },
-  { id: 'account', numeric: false, disablePadding: false, sortable: false, label: 'Account' },
+  { id: 'amount', numeric: false, disablePadding: false, sortable: true, label: 'Amount' },
+  { id: 'transaction_number', numeric: false, disablePadding: false, sortable: true, label: 'Transaction No.' },
   { id: 'status', numeric: false, disablePadding: false, sortable: true, label: 'Status' },
+  { id: 'type', numeric: false, disablePadding: false, sortable: true, label: 'Type' },
   { id: 'created_at', numeric: false, disablePadding: false, sortable: true, label: 'Date Created' },
   { id: 'action', numeric: false, disablePadding: false, sortable: false, label: '' },
 ];
@@ -36,7 +36,7 @@ const styles = theme => ({
   },
 });
 
-class RegistrationCodeTable extends React.Component {
+class TransactionTable extends React.Component {
   static propTypes = {
     classes: PropTypes.object.isRequired,
     list: PropTypes.object,
@@ -46,11 +46,18 @@ class RegistrationCodeTable extends React.Component {
     order: PropTypes.string,
     orderBy: PropTypes.string,
     page: PropTypes.number,
-    onDeleteRegistrationCode: PropTypes.func,
+    onViewTransaction: PropTypes.func,
+    onUpdateTransactionStatus: PropTypes.func,
   };
 
-  handleDeleteRegistrationCode = (id) => {
-    this.props.onDeleteRegistrationCode(id);
+  handleViewTransaction = (id) => {
+    this.props.onViewTransaction(id);
+  };
+
+  handleUpdateTransactionStatus = (id, transStatus, status, userId) => {
+    if (transStatus !== 'approved') {
+      this.props.onUpdateTransactionStatus(id, status, userId);
+    }
   };
 
   render() {
@@ -77,21 +84,26 @@ class RegistrationCodeTable extends React.Component {
             />
             <TableBody>
               {list.data.map(row => {
-                let user = '';
-                if (row.user) {
-                  user = `${row.user.firstName} ${row.user.lastName} `;
-                }
                 return (
                   <TableRow key={row.id}>
-                    <TableCell component="th" scope="row">{row.passcode}</TableCell>
-                    <TableCell>{row.securityCode}</TableCell>
-                    <TableCell>{user}</TableCell>
+                    <TableCell>{row.amount}</TableCell>
+                    <TableCell>{row.transactionNumber}</TableCell>
                     <TableCell>{row.status}</TableCell>
+                    <TableCell>{row.type}</TableCell>
                     <TableCell>{row.createdAt.format('MMMM, DD YYYY')}</TableCell>
                     <TableCell>
-                      <Tooltip title="Delete">
-                        <IconButton onClick={() => this.handleDeleteRegistrationCode(row.id)} aria-label="Delete">
-                          <DeleteIcon/>
+                      <Tooltip title="View">
+                        <IconButton onClick={() => this.handleViewTransaction(row.id)} aria-label="View">
+                          <ViewIcon/>
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip title="View">
+                        <IconButton
+                          disabled={row.status === 'approved'}
+                          onClick={() => this.handleUpdateTransactionStatus(row.id, row.status,'approved', row.user.id)}
+                          aria-label="Approved"
+                        >
+                          <CheckCircleOutline/>
                         </IconButton>
                       </Tooltip>
                     </TableCell>
@@ -119,4 +131,4 @@ class RegistrationCodeTable extends React.Component {
   }
 }
 
-export default withStyles(styles)(RegistrationCodeTable);
+export default withStyles(styles)(TransactionTable);

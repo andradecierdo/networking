@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import * as PropTypes from 'prop-types'
-import { searchUsers } from '../../service'
+import {deleteUser, searchUsers} from '../../service'
 import Table from './components/table';
 import UserModal from '../detail/Modal';
 import _ from 'lodash'
@@ -35,11 +35,18 @@ class Page extends Component {
     this.handleCloseUserModal = this.handleCloseUserModal.bind(this);
     this.handleFetchUsers = this.handleFetchUsers.bind(this);
     this.handleDeleteSuccess = this.handleDeleteSuccess.bind(this);
+    this.handleDeleteUser = this.handleDeleteUser.bind(this);
   }
 
   componentDidMount() {
     window.scrollTo(0, 0);
     this.handleFetchUsers();
+  }
+
+  handleDeleteUser = (id) => {
+    this.props.dispatch(deleteUser(id)).then(() => {
+      this.handleDeleteSuccess();
+    });
   }
 
   handleDeleteSuccess = () => {
@@ -138,6 +145,7 @@ class Page extends Component {
           handleChangePage={this.handleChangePage}
           handleRequestSort={this.handleRequestSort}
           onViewUser={this.handleViewUser}
+          onDeleteUser={this.handleDeleteUser}
           {...state}
           {...props}
         />

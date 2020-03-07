@@ -13,6 +13,17 @@ export default [
       loading: LoadingComponent,
     }),
   },
+  {
+    path: '/admin/transactions/user/:userId',
+    admin: true,
+    auth: true,
+    exact: true,
+    forAdmin: true,
+    component: Loadable({
+      loader: () => import('./pages/user'),
+      loading: LoadingComponent,
+    }),
+  },
   // {
   //   path: '/admin/transactions/create',
   //   admin: true,

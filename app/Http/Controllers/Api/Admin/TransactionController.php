@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\Transaction\TransactionRepositoryInterface;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class TransactionController extends Controller
 {
@@ -21,6 +21,23 @@ class TransactionController extends Controller
     public function __construct(TransactionRepositoryInterface $transactionRepository)
     {
         $this->transactionRepository = $transactionRepository;
+    }
+
+    /**
+     * Search a listing of the resource.
+     *
+     * @param Request $request
+     * @return LengthAwarePaginator|mixed
+     */
+    public function search(Request $request)
+    {
+        $relations = $request->relations ?? [];
+        $searchData['userId'] = $request->userId ?? null;
+        $searchData['keyword'] = $request->keyword ?? null;
+        $searchData['order'] = $request->order ?? null;
+        $searchData['orderBy'] = $request->orderBy ?? null;
+
+        return $this->transactionRepository->search($relations, $searchData);
     }
 
     public function index(Request $request)

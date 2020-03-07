@@ -13,4 +13,6 @@ interface RegistrationCodeRepositoryInterface
     public function loadAllWithUser();
 
     public function loadAll();
+
+    public function search(array $relations, array $searchData);
 }

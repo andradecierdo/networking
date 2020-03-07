@@ -48,4 +48,30 @@ class RegistrationCodeRepository extends BaseRepository implements RegistrationC
             ->latest()
             ->paginate($limit);
     }
+
+    public function search(array $relations, array $searchData, $limit = 20)
+    {
+        $keyword = $searchData['keyword'];
+        $order = $searchData['order'];
+        $orderBy = $searchData['orderBy'];
+        $query = $this->model->newQuery();
+
+        if (count($relations)) {
+            $query->with($relations);
+        }
+
+        if ($orderBy && $order) {
+            $query->orderBy($orderBy, $order);
+        }
+
+        if ($keyword) {
+            $query->where(function ($query) use ($keyword) {
+                $query->where('passcode', 'like', "%{$keyword}%")
+                    ->orWhere('security_code', 'like', "%{$keyword}%")
+                    ->orWhere('status', 'like', "%{$keyword}%");
+            });
+        }
+
+        return $query->paginate($limit);
+    }
 }

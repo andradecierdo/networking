@@ -46,7 +46,6 @@ class RegistrationCodeModal extends Component {
 
   render() {
     const {passcode, securityCode, generated, show} = this.state;
-    console.log(this.state);
     return (
       <Modal size={"lg"} show={show} onHide={this.handleClose} aria-labelledby="contained-modal-title-vcenter">
         <Modal.Header closeButton>

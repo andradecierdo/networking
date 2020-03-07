@@ -30,6 +30,21 @@ export function fetchRegistrationCodes(params = null) {
   )
 }
 
+export function searchRegistrationCodes(params = {}) {
+  return () => (
+    new Promise((resolve, reject) => {
+      Http.get(`/admin/registration-codes/search`, {params})
+        .then((res) => {
+          const data = Transformer.fetch(res.data);
+          return resolve(data);
+        })
+        .catch((err) => {
+          return reject(processError(err));
+        })
+    })
+  )
+}
+
 export function deleteRegistrationCode(id) {
   return () => (
     new Promise((resolve, reject) => {

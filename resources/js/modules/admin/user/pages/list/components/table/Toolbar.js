@@ -19,11 +19,10 @@ let TableToolbar = props => {
         </Typography>
         <div className={classes.spacer}/>
         <div className={classes.actions}>
-          <Tooltip title="New Company">
+          <Tooltip title="New User">
             <Link to="/admin/users/create">
               <IconButton aria-label="New User">
-                <SvgIcon>
-                </SvgIcon>
+                <SvgIcon/>
               </IconButton>
             </Link>
           </Tooltip>
