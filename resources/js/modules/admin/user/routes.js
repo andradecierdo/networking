@@ -34,5 +34,16 @@ export default [
       loader: () => import('./pages/register'),
       loading: LoadingComponent,
     }),
+  },
+  {
+    path: '/admin/users/:id/downline',
+    admin: true,
+    auth: true,
+    exact: true,
+    forAdmin: true,
+    component: Loadable({
+      loader: () => import('./pages/downline'),
+      loading: LoadingComponent,
+    }),
   }
 ];

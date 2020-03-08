@@ -44,6 +44,7 @@ class UserController extends Controller
     public function search(Request $request)
     {
         $relations = $request->relations ?? [];
+        $searchData['parentId'] = $request->parentId ?? null;
         $searchData['keyword'] = $request->keyword ?? null;
         $searchData['exceptions'] = $request->exceptions ?? [];
         $searchData['order'] = $request->order ?? null;
@@ -121,6 +122,6 @@ class UserController extends Controller
 
     public function show($id)
     {
-        return $this->userRepository->findByIdWithParent($id);
+        return $this->userRepository->findByIdWithParentAndRelationCount($id);
     }
 }

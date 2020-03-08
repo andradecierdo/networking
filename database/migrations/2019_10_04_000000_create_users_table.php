@@ -18,6 +18,7 @@ class CreateUsersTable extends Migration
             $table->string('first_name')->index();
             $table->string('last_name')->index();
             $table->string('middle_name');
+            $table->string('profile_url')->nullable();
             $table->string('address');
             $table->string('phone_number');
             $table->string('username')->unique()->index();

@@ -21,4 +21,6 @@ interface UserRepositoryInterface
     public function findById(int $id);
 
     public function findByIdWithParent(int $id);
+
+    public function findByIdWithParentAndRelationCount(int $id);
 }

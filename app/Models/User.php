@@ -60,7 +60,17 @@ class User extends Authenticatable
 //    }
 
     /**
-     * The relation between user and downlines
+     * The relation between user and transactions
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function transactions(): HasMany
+    {
+        return $this->hasMany(Transaction::class, 'user_id', 'id');
+    }
+
+    /**
+     * The relation between user and downline
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */

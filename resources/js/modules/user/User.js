@@ -22,6 +22,8 @@ class User extends Model {
     this.isAdmin = props.isAdmin || false
     this.balance = props.balance || 0
     this.rebate = props.rebate || 0
+    this.downlineCount = props.downlinesCount || 0
+    this.transactionCount = props.transactionsCount || 0
     this.createdAt = props.createdAt ? moment(props.createdAt) : null
     this.updatedAt = props.updatedAt ? moment(props.updatedAt) : null
     // User relationship model

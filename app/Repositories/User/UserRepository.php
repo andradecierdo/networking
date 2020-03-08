@@ -60,11 +60,16 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
 
     public function search(array $relations, array $searchData, $limit = 20)
     {
+        $parentId = $searchData['parentId'];
         $keyword = $searchData['keyword'];
         $exceptions = $searchData['exceptions'];
         $order = $searchData['order'];
         $orderBy = $searchData['orderBy'];
         $query = $this->model->newQuery();
+
+        if (!is_null($parentId)) {
+            $query->whereParentId($parentId);
+        }
 
         if (count($relations)) {
             $query->with($relations);
@@ -97,5 +102,14 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
             ->with('parent')
             ->latest()
             ->paginate($limit);
+    }
+
+    public function findByIdWithParentAndRelationCount(int $id)
+    {
+        return $this->model
+            ->with('parent')
+            ->withCount('transactions')
+            ->withCount('downlines')
+            ->findOrFail($id);
     }
 }

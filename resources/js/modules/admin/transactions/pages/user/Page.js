@@ -8,6 +8,8 @@ import CustomDialog from '../../../components/dialog';
 import _ from 'lodash'
 import User from '../../../../../modules/user/User'
 
+import CardHeader from './components/card'
+
 import Transaction from '../../../../../modules/transaction/Transaction';
 
 class Page extends Component {
@@ -200,8 +202,7 @@ class Page extends Component {
     return (
       <React.Fragment>
         <div className={"col-lg-12"}>
-          <p>{user.firstName}</p>
-          <p>{user.lastName}</p>
+          <CardHeader user={user} />
         </div>
         <Table
           list={transactions}
