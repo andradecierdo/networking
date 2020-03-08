@@ -45,7 +45,6 @@ class Page extends Component {
 
   componentDidMount() {
     window.scrollTo(0, 0);
-    console.log(this.state.routeUserId);
     this.props.dispatch(fetchUserDetail(this.state.routeUserId)).then((data) => {
       const user = new User(data)
       this.setState({
